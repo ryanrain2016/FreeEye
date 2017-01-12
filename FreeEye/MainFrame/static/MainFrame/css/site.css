@@ -1,0 +1,14 @@
+.error{
+    color: red;
+}
+
+.avatar{
+    width: 64px;
+    height: 64px;
+}
+.errorlist{
+    list-style: none;
+    padding-left:0;
+    margin-left:0;
+    color:red;
+}

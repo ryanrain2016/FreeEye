@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'MainFrame',
+    'HostManage',
+    'TaskManage',
+    'AlertManage',
+    'FileManage',
+    'SystemManage',
 ]
 
 MIDDLEWARE = [
@@ -74,9 +80,17 @@ WSGI_APPLICATION = 'FreeEye.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'default':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'FreeEye_db',
+        'USER':'root',
+        'PASSWORD':'holiday',
+        'HOST':'',
+        'PORT':'',
     }
 }
 
@@ -103,9 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -113,8 +127,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL = '/login/'
+
+LOGIN_DIRECT = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+MEDIA_URL = '/MEDIA/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+ITEMS_PER_PAGE = 10

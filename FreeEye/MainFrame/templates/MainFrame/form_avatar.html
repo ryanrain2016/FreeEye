@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>头像上传</title>
+    <link rel="stylesheet" href="{% static 'MainFrame/css/style.css' %}">
+</head>
+<body>
+    <div class="container-uploader">
+      <div class="imageBox">
+        <div class="thumbBox"></div>
+        <div class="spinner" style="display: none">Loading...</div>
+      </div>
+      <div class="action">
+        <!-- <input type="file" id="file" style=" width: 200px">-->
+        <div class="new-contentarea tc"> <a href="javascript:void(0)" class="upload-img">
+          <label for="upload-file">上传图像</label>
+          </a>
+          <input type="file" class="" name="upload-file" id="upload-file" />
+        </div>
+        <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
+        <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"  >
+        <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" >
+      </div>
+      <div class="cropped"></div>
+    </div>
+    <script src="{% static 'Hplus/js/jquery.min.js' %}"></script>
+    <script src="{% static 'MainFrame/js/cropbox.js' %}"></script>
+    <script src="{% static 'MainFrame/js/site.js' %}"></script>
+</body>
+</html>
