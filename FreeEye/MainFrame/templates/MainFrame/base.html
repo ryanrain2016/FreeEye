@@ -9,6 +9,12 @@
     <link href="{% static 'Hplus/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'Hplus/css/animate.css' %}" rel="stylesheet">
     <link href="{% static 'Hplus/css/style.css' %}" rel="stylesheet">
+    <script src="{% static 'Hplus/js/jquery.min.js' %}"></script>
+    <script src="{% static 'Hplus/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'Hplus/js/plugins/metisMenu/jquery.metisMenu.js' %}"></script>
+    <script src="{% static 'Hplus/js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+    <script src="{% static 'Hplus/js/plugins/layer/layer.min.js' %}"></script>
+    <script src="{% static 'Hplus/js/hplus.js' %}"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'UI/css/site.css' %}"> -->
     {% block head %}{% endblock %}
 </head>
@@ -18,12 +24,7 @@
             {% block content %}{% endblock %}
         </div>
     </div>
-    <script src="{% static 'Hplus/js/jquery.min.js' %}"></script>
-    <script src="{% static 'Hplus/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'Hplus/js/plugins/metisMenu/jquery.metisMenu.js' %}"></script>
-    <script src="{% static 'Hplus/js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
-    <script src="{% static 'Hplus/js/plugins/layer/layer.min.js' %}"></script>
-    <script src="{% static 'Hplus/js/hplus.js' %}"></script>
+
     <script type="text/javascript" src="{% static 'Hplus/js/contabs.js' %}"></script>
     <script src="{% static 'Hplus/js/plugins/pace/pace.min.js' %}"></script>
     {% block tail %} {% endblock %}

@@ -1,0 +1,50 @@
+
+<form action="/HostManage/AddHost/" method="post" id="HostAddForm">
+{% csrf_token %}
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+<h4 class="modal-title" id="hostModalLabel"><i class="glyphicon glyphicon-plus"></i>新增主机</h4>
+</div>
+{% for field in form %}
+<div class="modal-body">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ field.label }}</label>
+        <div class="col-sm-8">
+            <!-- <input type="text" class="form-control input-sm" id="CName" name="CName" placeholder="输入产品中文名称"> -->
+            {{ field }}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="error-tiper text-danger">
+    <ul>
+        {% for message in messages %}
+        <li><h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="modal-footer">
+    <button id="btn_HostModalClose" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+    <button id="btn_HostModalSubmit" type="button" class="btn btn-primary">确定</button>
+</div>
+</form>
+<script>
+    function OnSuccessPost_Add(msg){
+        if(msg.ret==0){
+            $('#btn_HostModalClose').click();
+            toastr.success('主机添加成功！','信息');
+        }
+        else{
+            $('#HostModal .modal-content').html(msg);
+        }
+    }
+
+    $('#btn_HostModalSubmit').click(function(){
+        $.ajax({
+            url:'/HostManage/AddHost/',
+            type:'post',
+            data:$('#HostAddForm').serialize(),
+            success:OnSuccessPost_Add,
+        });
+    });
+</script>

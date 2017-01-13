@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<form id="ImportHostForm"  action="/HostManage/ImportHost/" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title" id="hostModalLabel"><i class="glyphicon glyphicon-plus"></i>导入主机</h4>
+    </div>
+    <div class='modal-body form-control'>
+        <input type="file" name=importhostFile>
+    </div>
+    <div class='modal-body'>
+        <span>文件支持.xls和.xlsx两种格式，表格字段顺序为:主机名称，主机地址，主机端口，主机用户名，主机密码和备注。
+            其中备注可以为空，其他不能为空。</span>
+    </div>
+    <div class="modal-footer">
+        <button id="btn_HostModalClose" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="btn_HostModalSubmit" type="button" class="btn btn-primary">确定</button>
+    </div>
+</form>
+<script>
+    function OnSuccessPost_Add(msg){
+        if(msg.ret==0){
+            $('#btn_HostModalClose').click();
+        }
+        else{
+            $('#HostModal .modal-content').html(msg);
+        }
+    }
+    $('#btn_HostModalSubmit').click(function(){
+        var formData = new FormData($('#ImportHostForm')[0])
+        $.ajax({
+            url:'/HostManage/ImportHost/',
+            type:'post',
+            data:formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success:OnSuccessPost_Add,
+        });
+    })
+</script>

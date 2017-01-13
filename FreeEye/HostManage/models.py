@@ -5,6 +5,7 @@ class Host(models.Model):
     name = models.CharField(max_length=32)
     addr = models.CharField(max_length=128)
     port = models.IntegerField(default=22)
+    username = models.CharField(max_length=32)
     password = models.CharField(max_length=64)
     remark = models.TextField(max_length=128,blank=True,default='')
     active = models.BooleanField(default=False)
@@ -16,8 +17,6 @@ class Host(models.Model):
     def __str__(self):
         return '%s -- %s'%(self.name,self.addr)
 
-    def getAlerts(self):
-        pass
 
 class HostInfo(models.Model):
     host = models.OneToOneField(Host)
