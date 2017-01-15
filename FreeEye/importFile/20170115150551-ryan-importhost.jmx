@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
+  <hashTree>
+    <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Step 1" enabled="true">
+      <boolProp name="LoopController.continue_forever">false</boolProp>
+      <stringProp name="LoopController.loops">1</stringProp>
+    </LoopController>
+    <hashTree>
+      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://172.21.4.50/Wechat/ChatRoomForUser/1" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">172.21.4.50</stringProp>
+        <stringProp name="HTTPSampler.port">80</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path">/Wechat/ChatRoomForUser/1</stringProp>
+        <stringProp name="HTTPSampler.method">GET</stringProp>
+        <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+        <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+        <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+        <stringProp name="HTTPSampler.implementation">Java</stringProp>
+        <boolProp name="HTTPSampler.monitor">false</boolProp>
+        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+      </HTTPSamplerProxy>
+      <hashTree>
+        <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+          <stringProp name="ConstantTimer.delay">1</stringProp>
+          <stringProp name="RandomTimer.range">1</stringProp>
+        </GaussianRandomTimer>
+        <hashTree/>
+      </hashTree>
+      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://172.21.4.50/favicon.ico" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">172.21.4.50</stringProp>
+        <stringProp name="HTTPSampler.port">80</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path">/favicon.ico</stringProp>
+        <stringProp name="HTTPSampler.method">GET</stringProp>
+        <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+        <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+        <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+        <stringProp name="HTTPSampler.implementation">Java</stringProp>
+        <boolProp name="HTTPSampler.monitor">false</boolProp>
+        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+      </HTTPSamplerProxy>
+      <hashTree/>
+      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://172.21.4.50/api/ChatRoomApi/GetMeetingChatRoomUserInfo" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="MeetingId" elementType="HTTPArgument">
+              <boolProp name="HTTPArgument.always_encode">true</boolProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+              <stringProp name="Argument.name">MeetingId</stringProp>
+            </elementProp>
+          </collectionProp>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">172.21.4.50</stringProp>
+        <stringProp name="HTTPSampler.port">80</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path">/api/ChatRoomApi/GetMeetingChatRoomUserInfo</stringProp>
+        <stringProp name="HTTPSampler.method">POST</stringProp>
+        <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+        <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+        <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+        <stringProp name="HTTPSampler.implementation">Java</stringProp>
+        <boolProp name="HTTPSampler.monitor">false</boolProp>
+        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+      </HTTPSamplerProxy>
+      <hashTree/>
+      <JMeter.plugins.functional.samplers.websocket.WebSocketSampler guiclass="JMeter.plugins.functional.samplers.websocket.WebSocketSamplerGui" testclass="JMeter.plugins.functional.samplers.websocket.WebSocketSampler" testname="WebSocket 连接" enabled="true">
+        <stringProp name="serverAddress">172.21.4.50</stringProp>
+        <stringProp name="serverPort">2015</stringProp>
+        <stringProp name="implementation">RFC6455 (v13)</stringProp>
+        <stringProp name="protocol">ws</stringProp>
+        <stringProp name="contextPath">/1&amp;wesley_wwc</stringProp>
+        <stringProp name="contentEncoding">UTF-8</stringProp>
+        <stringProp name="requestPayload">{&quot;Action&quot;:&quot;User&quot;,&quot;MeetingId&quot;:1,&quot;MeetingName&quot;:&quot;test&quot;,&quot;ExcludeKeyWord&quot;:&quot;垃圾|不好看|无聊&quot;,&quot;UserInfo&quot;:{&quot;Id&quot;:1,&quot;UserId&quot;:&quot;wesley_wwc&quot;,&quot;OpenId&quot;:&quot;&quot;,&quot;WeiXinId&quot;:&quot;tamakirami&quot;,&quot;DeviceId&quot;:&quot;&quot;,&quot;UserName&quot;:&quot;Wesley吴伟城&quot;,&quot;LstDeptIds&quot;:&quot;620&quot;,&quot;Position&quot;:&quot;软件工程师&quot;,&quot;Mobile&quot;:&quot;13710015035&quot;,&quot;Gender&quot;:1,&quot;Email&quot;:&quot;wesley_wwc@meten.com&quot;,&quot;Enable&quot;:0,&quot;AvatarMediaId&quot;:null,&quot;ExtAttr&quot;:&quot;[[[]]]&quot;,&quot;Status&quot;:1,&quot;Avatar&quot;:&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/&quot;,&quot;JosnData&quot;:&quot;{\&quot;errcode\&quot;:0,\&quot;errmsg\&quot;:\&quot;ok\&quot;,\&quot;IsSuss\&quot;:true,\&quot;userid\&quot;:\&quot;wesley_wwc\&quot;,\&quot;name\&quot;:\&quot;Wesley吴伟城\&quot;,\&quot;department\&quot;:[620],\&quot;position\&quot;:\&quot;软件工程师\&quot;,\&quot;mobile\&quot;:\&quot;13710015035\&quot;,\&quot;gender\&quot;:1,\&quot;email\&quot;:\&quot;wesley_wwc@meten.com\&quot;,\&quot;weixinid\&quot;:\&quot;tamakirami\&quot;,\&quot;enable\&quot;:0,\&quot;avatar_mediaid\&quot;:null,\&quot;extattr\&quot;:[[[]]],\&quot;status\&quot;:1,\&quot;avatar\&quot;:\&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/\&quot;}&quot;,&quot;CreateTime&quot;:null,&quot;UpdateTime&quot;:null,&quot;isGuest&quot;:false},&quot;Msg&quot;:&quot;testmsg&quot;}</stringProp>
+        <stringProp name="connectionTimeout">10000</stringProp>
+        <stringProp name="responseTimeout">20000</stringProp>
+        <boolProp name="ignoreSslErrors">true</boolProp>
+        <boolProp name="streamingConnection">true</boolProp>
+        <stringProp name="connectionId">1</stringProp>
+        <stringProp name="responsePattern"></stringProp>
+        <stringProp name="closeConncectionPattern"></stringProp>
+        <stringProp name="proxyAddress"></stringProp>
+        <stringProp name="proxyPassword"></stringProp>
+        <stringProp name="proxyPort"></stringProp>
+        <stringProp name="proxyUsername"></stringProp>
+        <stringProp name="messageBacklog">3</stringProp>
+        <elementProp name="queryStringParameters" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+      </JMeter.plugins.functional.samplers.websocket.WebSocketSampler>
+      <hashTree/>
+      <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="保持连接" enabled="true">
+        <boolProp name="LoopController.continue_forever">true</boolProp>
+        <stringProp name="LoopController.loops">60</stringProp>
+      </LoopController>
+      <hashTree>
+        <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="高斯随机定时器" enabled="true">
+          <stringProp name="ConstantTimer.delay">10000</stringProp>
+          <stringProp name="RandomTimer.range">3000.0</stringProp>
+        </GaussianRandomTimer>
+        <hashTree/>
+        <JMeter.plugins.functional.samplers.websocket.WebSocketSampler guiclass="JMeter.plugins.functional.samplers.websocket.WebSocketSamplerGui" testclass="JMeter.plugins.functional.samplers.websocket.WebSocketSampler" testname="WebSocket 发送消息" enabled="true">
+          <stringProp name="serverAddress">172.21.4.50</stringProp>
+          <stringProp name="serverPort">2015</stringProp>
+          <stringProp name="implementation">RFC6455 (v13)</stringProp>
+          <stringProp name="protocol">ws</stringProp>
+          <stringProp name="contextPath">/1&amp;wesley_wwc</stringProp>
+          <stringProp name="contentEncoding">UTF-8</stringProp>
+          <stringProp name="requestPayload">{&quot;Action&quot;:&quot;User&quot;,&quot;MeetingId&quot;:1,&quot;MeetingName&quot;:&quot;test&quot;,&quot;ExcludeKeyWord&quot;:&quot;垃圾|不好看|无聊&quot;,&quot;UserInfo&quot;:{&quot;Id&quot;:1,&quot;UserId&quot;:&quot;wesley_wwc&quot;,&quot;OpenId&quot;:&quot;&quot;,&quot;WeiXinId&quot;:&quot;tamakirami&quot;,&quot;DeviceId&quot;:&quot;&quot;,&quot;UserName&quot;:&quot;Wesley吴伟城&quot;,&quot;LstDeptIds&quot;:&quot;620&quot;,&quot;Position&quot;:&quot;软件工程师&quot;,&quot;Mobile&quot;:&quot;13710015035&quot;,&quot;Gender&quot;:1,&quot;Email&quot;:&quot;wesley_wwc@meten.com&quot;,&quot;Enable&quot;:0,&quot;AvatarMediaId&quot;:null,&quot;ExtAttr&quot;:&quot;[[[]]]&quot;,&quot;Status&quot;:1,&quot;Avatar&quot;:&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/&quot;,&quot;JosnData&quot;:&quot;{\&quot;errcode\&quot;:0,\&quot;errmsg\&quot;:\&quot;ok\&quot;,\&quot;IsSuss\&quot;:true,\&quot;userid\&quot;:\&quot;wesley_wwc\&quot;,\&quot;name\&quot;:\&quot;Wesley吴伟城\&quot;,\&quot;department\&quot;:[620],\&quot;position\&quot;:\&quot;软件工程师\&quot;,\&quot;mobile\&quot;:\&quot;13710015035\&quot;,\&quot;gender\&quot;:1,\&quot;email\&quot;:\&quot;wesley_wwc@meten.com\&quot;,\&quot;weixinid\&quot;:\&quot;tamakirami\&quot;,\&quot;enable\&quot;:0,\&quot;avatar_mediaid\&quot;:null,\&quot;extattr\&quot;:[[[]]],\&quot;status\&quot;:1,\&quot;avatar\&quot;:\&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/\&quot;}&quot;,&quot;CreateTime&quot;:null,&quot;UpdateTime&quot;:null,&quot;isGuest&quot;:false},&quot;Msg&quot;:&quot;testmsg&quot;}</stringProp>
+          <stringProp name="connectionTimeout">10000</stringProp>
+          <stringProp name="responseTimeout">20000</stringProp>
+          <boolProp name="ignoreSslErrors">true</boolProp>
+          <boolProp name="streamingConnection">true</boolProp>
+          <stringProp name="connectionId">1</stringProp>
+          <stringProp name="responsePattern"></stringProp>
+          <stringProp name="closeConncectionPattern"></stringProp>
+          <stringProp name="proxyAddress"></stringProp>
+          <stringProp name="proxyPassword"></stringProp>
+          <stringProp name="proxyPort"></stringProp>
+          <stringProp name="proxyUsername"></stringProp>
+          <stringProp name="messageBacklog">3</stringProp>
+          <elementProp name="queryStringParameters" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+        </JMeter.plugins.functional.samplers.websocket.WebSocketSampler>
+        <hashTree/>
+      </hashTree>
+      <JMeter.plugins.functional.samplers.websocket.WebSocketSampler guiclass="JMeter.plugins.functional.samplers.websocket.WebSocketSamplerGui" testclass="JMeter.plugins.functional.samplers.websocket.WebSocketSampler" testname="WebSocket 即将关闭连接" enabled="true">
+        <stringProp name="serverAddress">172.21.4.50</stringProp>
+        <stringProp name="serverPort">2015</stringProp>
+        <stringProp name="implementation">RFC6455 (v13)</stringProp>
+        <stringProp name="protocol">ws</stringProp>
+        <stringProp name="contextPath">/1&amp;wesley_wwc</stringProp>
+        <stringProp name="contentEncoding">UTF-8</stringProp>
+        <stringProp name="requestPayload">{&quot;Action&quot;:&quot;User&quot;,&quot;MeetingId&quot;:1,&quot;MeetingName&quot;:&quot;test&quot;,&quot;ExcludeKeyWord&quot;:&quot;垃圾|不好看|无聊&quot;,&quot;UserInfo&quot;:{&quot;Id&quot;:1,&quot;UserId&quot;:&quot;wesley_wwc&quot;,&quot;OpenId&quot;:&quot;&quot;,&quot;WeiXinId&quot;:&quot;tamakirami&quot;,&quot;DeviceId&quot;:&quot;&quot;,&quot;UserName&quot;:&quot;Wesley吴伟城&quot;,&quot;LstDeptIds&quot;:&quot;620&quot;,&quot;Position&quot;:&quot;软件工程师&quot;,&quot;Mobile&quot;:&quot;13710015035&quot;,&quot;Gender&quot;:1,&quot;Email&quot;:&quot;wesley_wwc@meten.com&quot;,&quot;Enable&quot;:0,&quot;AvatarMediaId&quot;:null,&quot;ExtAttr&quot;:&quot;[[[]]]&quot;,&quot;Status&quot;:1,&quot;Avatar&quot;:&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/&quot;,&quot;JosnData&quot;:&quot;{\&quot;errcode\&quot;:0,\&quot;errmsg\&quot;:\&quot;ok\&quot;,\&quot;IsSuss\&quot;:true,\&quot;userid\&quot;:\&quot;wesley_wwc\&quot;,\&quot;name\&quot;:\&quot;Wesley吴伟城\&quot;,\&quot;department\&quot;:[620],\&quot;position\&quot;:\&quot;软件工程师\&quot;,\&quot;mobile\&quot;:\&quot;13710015035\&quot;,\&quot;gender\&quot;:1,\&quot;email\&quot;:\&quot;wesley_wwc@meten.com\&quot;,\&quot;weixinid\&quot;:\&quot;tamakirami\&quot;,\&quot;enable\&quot;:0,\&quot;avatar_mediaid\&quot;:null,\&quot;extattr\&quot;:[[[]]],\&quot;status\&quot;:1,\&quot;avatar\&quot;:\&quot;http://shp.qpic.cn/bizmp/IPYhmjC5kVCPqH9a6K6ZhjyjJZtEE69SC0ypk5wicM2x8k1a2212iaFg/\&quot;}&quot;,&quot;CreateTime&quot;:null,&quot;UpdateTime&quot;:null,&quot;isGuest&quot;:false},&quot;Msg&quot;:&quot;testmsg&quot;}</stringProp>
+        <stringProp name="connectionTimeout">10000</stringProp>
+        <stringProp name="responseTimeout">20000</stringProp>
+        <boolProp name="ignoreSslErrors">true</boolProp>
+        <boolProp name="streamingConnection">true</boolProp>
+        <stringProp name="connectionId">1</stringProp>
+        <stringProp name="responsePattern"></stringProp>
+        <stringProp name="closeConncectionPattern"></stringProp>
+        <stringProp name="proxyAddress"></stringProp>
+        <stringProp name="proxyPassword"></stringProp>
+        <stringProp name="proxyPort"></stringProp>
+        <stringProp name="proxyUsername"></stringProp>
+        <stringProp name="messageBacklog">3</stringProp>
+        <elementProp name="queryStringParameters" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+      </JMeter.plugins.functional.samplers.websocket.WebSocketSampler>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

@@ -9,11 +9,10 @@
             <tr>
                 <th style="width:10%">主机名称</th>
                 <th style="width:20%">主机IP</th>
-                <th style="width:5%">ssh端口</th>
                 <th style="width:10%">主机组</th>
                 <th style="width:10%">创建时间</th>
-                <th style="width:25%">备注</th>
-                <th style="width:20%">操作</th>
+                <th style="width:10%">备注</th>
+                <th style="width:35%">操作</th>
             </tr>
         </thead>
         <tbody id="tableAreaTbody">
@@ -23,19 +22,25 @@
                 </tr>
             {% else %}
                 {% for data in cur_page.object_list %}
-                    <tr>
+                    <tr id='host_{{ data.id }}'>
                         <td>{{ data.name }}</td>
                         <td>{{ data.addr }}</td>
-                        <td>{{ data.port }}</td>
                         <td>{{ data.group }}</td>
                         <td>{{ data.createAt|date:"Y-m-d" }}</td>
                         <td>{{ data.remark }}</td>
-                        <td></td>
+                        <td>
+                            <a class="btn btn-primary" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>
+                            <button class="btn btn-primary" onclick='AddToTop({{ data.id }})'>加到首页</button>
+                            <button class="btn btn-primary" onclick='Webshell({{ data.id }})'>shell</button>
+                            <button class="btn btn-primary" onclick='AlertSet({{ data.id }})'>告警设置</button>
+                            <button class="btn btn-primary" onclick='EditHost({{ data.id }})'>修改</button>
+                            <button class="btn btn-primary" onclick='DeleteHost({{ data.id }})'>删除</button>
+                        </td>
                     </tr>
                 {% endfor %}
             {% endif %}
 </tbody></table></div>
 {% if paginator.num_pages > 1 %}
-    {% include 'HostManage/paginator.html' %}
+    {% include 'paginator.html' %}
 {% endif %}
 {% endif %}

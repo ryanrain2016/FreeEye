@@ -10,7 +10,7 @@ class Host(models.Model):
     remark = models.TextField(max_length=128,blank=True,default='')
     active = models.BooleanField(default=False)
     isDel = models.BooleanField(default=False)
-    hostgroup = models.ForeignKey('SystemManage.HostGroup',blank=True,null=True,default=None)
+    hostgroup = models.ForeignKey('SystemManage.HostGroup',on_delete=models.SET_NULL,blank=True,null=True,default=None)
     alert = models.ManyToManyField('AlertManage.Alert',blank=True,null=True,default=None)
     createAt = models.DateTimeField(auto_now_add=True)
 
@@ -22,6 +22,7 @@ class HostInfo(models.Model):
     host = models.OneToOneField(Host)
     OS = models.CharField(max_length=64)
     cpu_version = models.CharField(max_length=128)
+    MAC = models.CharField(max_length=32)
     mem_total = models.IntegerField()
     disk_total = models.CharField(max_length=16)
     kernal_version = models.CharField(max_length=128)
@@ -58,4 +59,5 @@ class HostAppliction(models.Model):
     host_id = models.IntegerField()
     application_id = models.IntegerField()
     status = models.CharField(max_length=2,choices=STATUS_CHOICES,default=OFF)
-    updateAt  =models.DateTimeField(auto_now=True)
+    updateAt  = models.DateTimeField(auto_now=True)
+    

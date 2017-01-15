@@ -49,23 +49,25 @@
         </div>
 
         <div class="ibox float-e-margins">
-                <div class="ibox-content">
-                    <div class="example-wrap">
-                        <div class="row">
-                            <div id="tableArea" class="grid-view">
-                            {% include 'HostManage/hostlisttable.html' %}
-                            </div>
+            <div class="ibox-content">
+                <div class="example-wrap">
+                    <div class="row">
+                        <div id="tableArea" class="grid-view">
+                        {% include 'HostManage/hostlisttable.html' %}
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block tail %}
+<link rel="stylesheet" href="{% static 'Hplus/css/plugins/sweetalert/sweetalert.css' %}">
 <script src="{% static 'Hplus/js/content.js' %}"></script>
 <script src="{% static 'MainFrame/js/jquery.unobtrusive-ajax.min.js' %}"></script>
 <script src="{% static 'Hplus/js/plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'Hplus/js/plugins/sweetalert/sweetalert.min.js' %}"></script>
     <script>
 
     //数据加载中展示
@@ -128,5 +130,49 @@
         });
     });
     </script>
+    <script>
+        function EditHost(host_id){
+            $.ajax({
+                url:'/HostManage/EditHost/'+host_id,
+                type:'get',
+                success:function(html){
+                    $('#HostModal .modal-content').html(html);
+                },
+                error:function(e){
+                    $('#HostModal .modal-content').html(e.responseText);
+                }
+            });
+            $('#HostModal').modal();
+        }
+        function DeleteHost(host_id){
+            swal({
+                title: "您确定要删除这条信息吗？",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                closeOnConfirm: false
+            }, function () {
+                $.ajax({
+                    url:'/HostManage/DeleteHost/'+host_id,
+                    type:'post',
+                    success:function(html){
+                        swal("删除成功！", "您已经删除了这条主机信息。", "success");
+                        $('#host_'+host_id).fadeOut();
+                    },
+                });
+            });
 
+        }
+        function OnSuccessPost_Add(msg){
+            if(msg.ret==0){
+                $('#btn_HostModalClose').click();
+                toastr.success('主机保存成功！','信息');
+            }
+            else{
+                $('#HostModal .modal-content').html(msg);
+            }
+        }
+    </script>
 {% endblock %}
