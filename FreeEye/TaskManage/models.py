@@ -22,7 +22,7 @@ class FileTask(models.Model):
     name = models.CharField(max_length=32)
     file = models.CharField(max_length=256)
     remote_file = models.CharField(max_length=256)
-    on_exists = models.CharField(max_length=4,choices=(('ov','覆盖'),('ba','备份')))
+    on_exists = models.CharField(max_length=4,choices=(('ov','覆盖'),('ba','备份'),('sk','跳过')))
     createBy = models.ForeignKey(User)
     start = models.BooleanField(default=False)
     createAt = models.DateTimeField(auto_now_add=True)

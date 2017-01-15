@@ -31,7 +31,7 @@ def hostList(request):
             if data['port']:
                 tableData = tableData.filter(port=data['port'])
             if data['group']:
-                tableData = models.Host.objects.filter(hostgroup=data['group'])
+                tableData = tableData.filter(hostgroup=data['group'])
             paginator = Paginator(tableData,settings.ITEMS_PER_PAGE) #模板需要
             page = int(request.GET.get('page',1))                 #模板需要
             start = max(page-5,0)

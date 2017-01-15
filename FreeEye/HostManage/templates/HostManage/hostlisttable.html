@@ -26,7 +26,7 @@
                         <td>{{ data.name }}</td>
                         <td>{{ data.addr }}</td>
                         <td>{{ data.group }}</td>
-                        <td>{{ data.createAt|date:"Y-m-d" }}</td>
+                        <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>{{ data.remark }}</td>
                         <td>
                             <a class="btn btn-primary" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>

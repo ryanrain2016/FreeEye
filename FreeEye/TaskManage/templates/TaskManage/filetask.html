@@ -96,13 +96,13 @@ $(function(){
             url:'/TaskManage/AddFileTask/',
             type:'get',
             success:function(html){
-                $('#GroupModal .modal-content').html(html);
+                $('#TaskModal .modal-content').html(html);
             },
             error:function(e){
-                $('#GroupModal .modal-content').html(e.responseText);
+                $('#TaskModal .modal-content').html(e.responseText);
             }
         });
-        $('#GroupModal').modal();
+        $('#TaskModal').modal();
     });
 });
 </script>

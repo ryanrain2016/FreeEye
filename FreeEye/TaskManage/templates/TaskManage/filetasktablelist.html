@@ -6,8 +6,12 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th style="width:50%">主机组名称</th>
-                <th style="width:50%">操作</th>
+                <th style="width:15%">任务名称</th>
+                <th style="width:20%">文件</th>
+                <th style="width:20%">远程文件</th>
+                <th style="width:15%">文件已存在时</th>
+                <th style="width:10%">创建时间</th>
+                <th style="width:20%">操作</th>
             </tr>
         </thead>
         <tbody id="tableAreaTbody">
@@ -19,10 +23,21 @@
                 {% for data in cur_page.object_list %}
                     <tr>
                         <td>{{ data.name }}</td>
+                        <td>{{ data.file }}</td>
+                        <td>{{ data.remote_file }}</td>
+                        <td>{% if data.on_exists == 'ov' %}
+                            覆盖
+                            {% else %}
+                                {% if data.on_exists == 'ba' %}
+                                备份
+                                {%else%}
+                                跳过
+                                {%endif%}
+                            {% endif %}
+                        </td>
+                        <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>
-                            <button class="btn btn-primary" onclick='Delete({{ data.id }})'>删除</button>
-                            <button class="btn btn-primary" onclick='Edit({{ data.id }})'>编辑</button>
-                            <button class="btn btn-primary" onclick='AssignHost({{ data.id }})'>分配主机</button>
+                            <a class="btn btn-primary" href='/TaskManage/FileTaskDetail/{{ data.id }}'>详情</a>
                         </td>
                     </tr>
                 {% endfor %}
