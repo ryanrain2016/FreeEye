@@ -5,8 +5,8 @@ class FileTaskForm(forms.ModelForm):
         model = models.FileTask
         fields = ('name','file','remote_file','on_exists')
         widgets={
-            'name':forms.CharField(attrs={'class':'form-control'}),
-            'file':forms.CharField(attrs={'class':'form-control'}),
-            'remote_file':forms.CharField(attrs={'class':'form-control'}),
+            'name':forms.TextInput(attrs={'class':'form-control'}),
+            'file':forms.TextInput(attrs={'class':'form-control'}),
+            'remote_file':forms.TextInput(attrs={'class':'form-control'}),
             'on_exists':forms.Select(attrs={'class':'form-control'}),
         }

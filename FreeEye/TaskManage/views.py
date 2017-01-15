@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 
 from . import models
-from . import views
+from . import forms
 # Create your views here.
 
 
