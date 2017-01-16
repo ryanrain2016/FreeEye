@@ -13,6 +13,7 @@ class CommandTask(models.Model):
 class CommandTaskProgress(models.Model):
     commandtask = models.ForeignKey(CommandTask)
     taskhost = models.ForeignKey('HostManage.Host')
+    output = models.CharField(max_length=4096,default='')
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
     createAt = models.DateTimeField(auto_now_add=True)

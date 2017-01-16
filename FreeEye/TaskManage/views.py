@@ -103,7 +103,7 @@ def addCommandTask(request):
             data = form.cleaned_data
             task = models.CommandTask(
                 name=data['name'],
-                cmdline=data['name'],
+                cmdline=data['cmdline'],
                 createBy=request.user,
             )
             task.save()
@@ -111,3 +111,11 @@ def addCommandTask(request):
     else:
         form = forms.CommandTaskForm()
     return render(request,'TaskManage/addcommandtask.html',locals())
+
+@login_required
+def FileTaskDetail(request, id):
+    return render(request,'TaskManage/filetaskdetail.html',locals())
+
+@login_required
+def CommandTaskDetail(request, id):
+    return render(request,'TaskManage/commandtaskdetail.html',locals())

@@ -1,0 +1,44 @@
+{% extends 'MainFrame/base.html' %}
+{% load staticfiles %}
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>执行对象</h5>
+        <div class="ibox-tools">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <form data-ajax="true" data-ajax-begin="tableLoading" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-update="#tableArea" id="searchForm" method="post" role="form">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class='col-md-6'>
+            <div class="form-group">
+                <div class='col-md-3 control-label'>{{ field.label }}</div>
+                <div class='col-md-9'>{{ field }}</div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class='row text-center'>
+            &nbsp;<br>
+            <button id="btnSubmit" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">分配</button>
+            <button id="btnExecute" type="button" class="btn btn-w-m btn-primary btn-sm">执行</button>
+            <button id="btnRexcute" type="button" class="btn btn-w-m btn-primary btn-sm">重新执行</button>
+            <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block tail %}
+<script src="{% static 'Hplus/js/content.js' %}"></script>
+<script src="{% static 'MainFrame/js/jquery.unobtrusive-ajax.min.js' %}"></script>
+<script src="{% static 'Hplus/js/plugins/toastr/toastr.min.js' %}"></script>
+
+{% endblock %}

@@ -36,3 +36,25 @@ def addHostGroup(request):
             return render(request,'SystemManage/addhostgroup.html',locals())
     else:
         return render(request,'SystemManage/addhostgroup.html',locals())
+
+def userList(request):
+    if request.method=='POST':
+        username = request.POST.get('username','')
+        email = request.POST.get('email','')
+        if username:
+            tableData = models.User.objects.select_related('profile').filter(username__icontains=username)
+        else:
+            tableData = models.User.objects.select_related('profile')
+        if email:
+            tableData = tableData.filter(profile__email__icontains=email)
+        paginator = Paginator(tableData,settings.ITEMS_PER_PAGE) #模板需要
+        page = int(request.GET.get('page',1))                 #模板需要
+        start = max(page-5,0)
+        page_range = paginator.page_range[start:start+10]      #模板需要
+        cur_page = paginator.page(page)                        #模板需要
+        return render(request,'SystemManage/usertablelist.html',locals())
+    return render(request,'SystemManage/userList.html',locals())
+
+
+def addUser(request):
+    pass
