@@ -7,5 +7,8 @@ class HostGroup(models.Model):
     user = models.ManyToManyField(User,blank=True,null=True)
     isDel = models.BooleanField(default=False)
 
-    def __self__(self):
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
         return self.name

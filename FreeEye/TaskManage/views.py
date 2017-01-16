@@ -4,14 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.conf import settings
-from django.conf import settings
+from django.contrib.auth.models import User
 import os
 from datetime import datetime
 from . import models
 from . import forms
 # Create your views here.
-
-
+from functools import reduce
+import SystemManage
+import HostManage
 @csrf_exempt
 @login_required
 def fileTask(request):
@@ -119,3 +120,35 @@ def FileTaskDetail(request, id):
 @login_required
 def CommandTaskDetail(request, id):
     return render(request,'TaskManage/commandtaskdetail.html',locals())
+
+def assignHost(request):
+    if request.method=='POST':
+        return render(request,'TaskManage/assignhost.html',locals())
+    else:
+        return render(request,'TaskManage/assignhost.html',locals())
+
+@csrf_exempt
+def getHostGroup(request):
+    #hostgroups = User.objects.select_related().get(pk=request.user.id).hostgroup_set
+    if request.user.is_superuser:
+        hostgroups = SystemManage.models.HostGroup.objects.all()
+    else:
+        hostgroups = request.user.hostgroup_set.all()
+    nodes = [dict(text=group.name,groupid=group.id) for group in hostgroups]
+    return JsonResponse([dict(text='全部',
+        nodes = nodes,
+        groupid=-1
+    )],safe=False)
+
+@csrf_exempt
+def getHost(request):
+    hostgroupid = request.POST['groupid']
+    if hostgroupid != '-1':
+        hosts = SystemManage.models.HostGroup.objects.select_related().get(pk=hostgroupid).host_set.all()
+    elif request.user.is_superuser:
+        hosts = HostManage.models.Host.objects.all()
+    else:
+        groups = request.user.hostgroup_set.all()
+        hosts = [group.host_set for group in groups]
+        hosts = reduce(lambda x,y:x|y,hosts) if hosts else []
+    return JsonResponse([dict(id=host.id,name=host.name) for host in hosts.all()],safe=False)
