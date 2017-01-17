@@ -114,14 +114,30 @@ def addCommandTask(request):
     return render(request,'TaskManage/addcommandtask.html',locals())
 
 @login_required
+@csrf_exempt
 def FileTaskDetail(request, id):
+    taskType = 'file'
+    task = models.FileTask.objects.get(pk=id)
+    if request.method=='POST':
+        page = request.GET.get('page',1)
+        tableData = models.FileTaskProgress.objects.filter(task=task)
+        paginator = Paginator(tableData,settings.ITEMS_PER_PAGE) #模板需要
+        page = int(request.GET.get('page',1))                 #模板需要
+        start = max(page-5,0)
+        page_range = paginator.page_range[start:start+10]      #模板需要
+        cur_page = paginator.page(page)                        #模板需要
+        return render(request,'TaskManage/filetaskdetailtablelist.html',locals())
     return render(request,'TaskManage/filetaskdetail.html',locals())
 
 @login_required
 def CommandTaskDetail(request, id):
+    taskType = 'cmd'
+    task = models.CommandTask.objects.get(pk=id)
     return render(request,'TaskManage/commandtaskdetail.html',locals())
 
 def assignHost(request):
+    taskType = request.GET.get('taskType','')
+    id = request.GET.get('id','')
     if request.method=='POST':
         return render(request,'TaskManage/assignhost.html',locals())
     else:
@@ -142,6 +158,8 @@ def getHostGroup(request):
 
 @csrf_exempt
 def getHost(request):
+    taskType = request.GET.get('taskType','')
+    id = request.GET.get('id','')
     hostgroupid = request.POST['groupid']
     if hostgroupid != '-1':
         hosts = SystemManage.models.HostGroup.objects.select_related().get(pk=hostgroupid).host_set.all()
@@ -151,4 +169,31 @@ def getHost(request):
         groups = request.user.hostgroup_set.all()
         hosts = [group.host_set for group in groups]
         hosts = reduce(lambda x,y:x|y,hosts) if hosts else []
-    return JsonResponse([dict(id=host.id,name=host.name) for host in hosts.all()],safe=False)
+    taskmodel = models.FileTask if taskType == 'file' else models.CommandTask
+    task = taskmodel.objects.get(pk=id)
+    taskprogressmodel = models.FileTaskProgress if taskType=='file' else models.CommandTaskProgress
+    taskprogress = taskprogressmodel.objects.filter(task = task).select_related().all()
+    selected_hosts = [p.taskhost for p in taskprogress]
+    hosts = [dict(id=host.id,name=host.name,checked=host in selected_hosts) for host in hosts.all()]
+    return JsonResponse(hosts,safe=False)
+
+@csrf_exempt
+def setHosts(request):
+    taskType = request.POST.get('taskType','')
+    id = request.POST.get('id','')
+    hostIds = request.POST.get('hostIds','')
+    if not hostIds:return JsonResponse(dict(ret=0))
+    hostIds = hostIds.split('&')
+    taskmodel = models.FileTask if taskType == 'file' else models.CommandTask
+    task = taskmodel.objects.get(pk=id)
+    taskprogressmodel = models.FileTaskProgress if taskType=='file' else models.CommandTaskProgress
+    taskprogress = taskprogressmodel.objects.filter(task = task).select_related().all()
+    selected_hosts = [str(p.taskhost.id) for p in taskprogress]
+    for hostid in hostIds:
+        if not hostid:
+            break
+        if hostid in selected_hosts:
+            continue
+        p = taskprogressmodel(task=task,taskhost=HostManage.models.Host.objects.get(pk=hostid))
+        p.save()
+    return JsonResponse(dict(ret=0))

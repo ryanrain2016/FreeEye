@@ -11,4 +11,5 @@ urlpatterns=[
     url(r'^AssignHost/',views.assignHost,name='assignhost'),
     url(r'^GetHostGroup/',views.getHostGroup,name='gethostgroup'),
     url(r'^GetHost/',views.getHost,name='gethost'),
+    url(r'^SetHosts/',views.setHosts,name='sethosts'),
 ]

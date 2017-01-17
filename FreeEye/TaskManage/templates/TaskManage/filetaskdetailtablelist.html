@@ -1,0 +1,67 @@
+{% if request.method == 'GET' %}
+<div class="text-center" id="messageArea"><i class="glyphicon glyphicon-exclamation-sign"></i>请选择查询条件...</div>
+{% else %}
+<div style="float:left;padding-bottom:10px;width:100%;"> 共 {{ paginator.num_pages }} 页 {{ paginator.count }} 条记录，当前为第 {{ page }} 页</div>
+<div class="grid-view">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width:10%">任务名称</th>
+                <th style="width:10%">主机</th>
+                <th style="width:10%">文件</th>
+                <th style="width:20%">远程文件</th>
+                <th style="width:10%">文件已存在时</th>
+                <th style="width:10%">进度</th>
+                <th style="width:10%">创建时间</th>
+                <th style="width:20%">操作</th>
+            </tr>
+        </thead>
+        <tbody id="tableAreaTbody">
+            {% if not cur_page.object_list %}
+                <tr>
+                    <td colspan="7" style="text-align:center">没有数据！</td>
+                </tr>
+            {% else %}
+                {% for data in cur_page.object_list %}
+                    <tr>
+                        <td>{{ data.task.name }}</td>
+                        <td>{{ data.taskhost.name }}</td>
+                        <td>{{ data.task.file }}</td>
+                        <td>{{ data.task.remote_file }}</td>
+                        <td>{% if data.task.on_exists == 'ov' %}
+                            覆盖
+                            {% else %}
+                                {% if data.task.on_exists == 'ba' %}
+                                备份
+                                {%else%}
+                                跳过
+                                {%endif%}
+                            {% endif %}
+                        </td>
+                        <td>{% if not data.is_start %}
+                            未开始
+                            {% else %}
+                                {% if not data.is_finish %}
+                                   进行中
+                                {% else %}
+                                    已完成
+                                {% endif %}
+                            {% endif %}</td>
+                        <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
+                        <td>
+                            {% if not data.is_start %}
+                            <a class="btn btn-primary" href='/TaskManage/FileTaskExecute/{{ data.id }}'>执行</a>
+                            {% else %}
+                                {% if data.is_finished %}
+                            <a class="btn btn-primary" href='/TaskManage/FileTaskReExecute/{{ data.id }}'>重新执行</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+</tbody></table></div>
+{% if paginator.num_pages > 1 %}
+    {% include 'paginator.html' %}
+{% endif %}
+{% endif %}

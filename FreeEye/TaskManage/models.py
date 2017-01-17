@@ -11,13 +11,13 @@ class CommandTask(models.Model):
     updateAt = models.DateTimeField(auto_now=True)
 
 class CommandTaskProgress(models.Model):
-    commandtask = models.ForeignKey(CommandTask)
+    task = models.ForeignKey(CommandTask)
     taskhost = models.ForeignKey('HostManage.Host')
     output = models.CharField(max_length=4096,default='')
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
     createAt = models.DateTimeField(auto_now_add=True)
-    finishAt = models.DateTimeField(auto_now=True)
+    finishAt = models.DateTimeField(null=True,default=None)
 
 class FileTask(models.Model):
     name = models.CharField(max_length=32)
@@ -30,9 +30,9 @@ class FileTask(models.Model):
     updateAt = models.DateTimeField(auto_now=True)
 
 class FileTaskProgress(models.Model):
-    commandtask = models.ForeignKey(CommandTask)
+    task = models.ForeignKey(FileTask)
     taskhost = models.ForeignKey('HostManage.Host')
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
     createAt = models.DateTimeField(auto_now_add=True)
-    finishAt = models.DateTimeField(default=None,null=True)
+    finishAt = models.DateTimeField(null=True,default=None)

@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block content %}
+<div class='md-col-12'>
+    <ol class="breadcrumb">
+      <li><a href="/TaskManage/FileDispatch/">文件分发</a></li>
+      <li class="active">[{{ task.name }}]详情</li>
+    </ol>
+</div>
+<form data-ajax="true" data-ajax-begin="tableLoading" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-update="#tableArea" id="searchForm" method="post" role="form">
+    <input type="hidden" name='id' value="{{ id }}">
+    <input type="hidden" name='taskType' value="{{ taskType }}">
+</form>
 <div class="modal inmodal fade in" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -14,7 +24,7 @@
 </div>
 <div class="ibox float-e-margins">
     <div class="ibox-title">
-        <h5>执行对象</h5>
+        <h5>执行操作</h5>
         <div class="ibox-tools">
             <a class="collapse-link">
                 <i class="fa fa-chevron-up"></i>
@@ -24,13 +34,25 @@
     <div class="ibox-content">
         <div class='row text-center'>
             &nbsp;<br>
-            <button id="btnAssign" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">分配</button>
+            <button id="btnAssign" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">分配主机</button>
             <button id="btnExecute" type="button" class="btn btn-w-m btn-primary btn-sm">执行</button>
             <button id="btnRexcute" type="button" class="btn btn-w-m btn-primary btn-sm">重新执行</button>
             <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
         </div>
     </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="example-wrap">
+                <div class="row">
+                    <div id="tableArea" class="grid-view">
+                    {% include 'TaskManage/filetaskdetailtablelist.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block tail %}
@@ -38,9 +60,40 @@
 <script src="{% static 'MainFrame/js/jquery.unobtrusive-ajax.min.js' %}"></script>
 <script src="{% static 'Hplus/js/plugins/toastr/toastr.min.js' %}"></script>
 <script>
+$(function(){
+    $('#searchForm').submit();
+});
+function tableLoading() {
+    var $tbody = $("#tableAreaTbody");
+    var $messageArea = $("#messageArea");
+
+    if ($tbody.length > 0) {
+        $tbody.empty().append(`<tr><td colspan="14" style="text-align:center">数据加载中...</td></tr>`);
+    } else {
+        if ($messageArea.length > 0) {
+            $messageArea.text("数据加载中...");
+        }
+    }
+}
+
+function reloadTable() {
+    $("#searchForm").submit();
+}
+
+function AjaxPaginator(path, page,updateId){
+    $.ajax({
+        url:path+'?page='+page,
+        method:'post',
+        data:$('#searchForm').serialize(),
+        success:function(html){
+            $(updateId).html(html);
+        }
+    });
+    tableLoading();
+}
 $('#btnAssign').click(function(){
     $.ajax({
-        url:'/TaskManage/AssignHost/',
+        url:'/TaskManage/AssignHost/?taskType={{ taskType }}&id={{ id }}',
         type:'get',
         success:function(html){
             $('#TaskModal .modal-content').html(html);
