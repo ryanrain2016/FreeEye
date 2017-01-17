@@ -72,17 +72,17 @@ def importHost(request):
 
 def hostDetail(request,host_id):
     host = models.Host.objects.select_related().get(pk=host_id)
-    host={
-        'name':'测试主机',
-        'hostinfo':dict(
-            OS='CentOS',
-            cpu_version='Exon 5202 2.5 GHz',
-            kernal_version='Linux',
-            mem_total='4G',
-            disk_total='500G',
-            MAC='00:00:00:00:00',
-        )
-    }
+    # host={
+    #     'name':'测试主机',
+    #     'hostinfo':dict(
+    #         OS='CentOS',
+    #         cpu_version='Exon 5202 2.5 GHz',
+    #         kernal_version='Linux',
+    #         mem_total='4G',
+    #         disk_total='500G',
+    #         MAC='00:00:00:00:00',
+    #     )
+    # }
     return render(request,'HostManage/hostDetail.html',locals())
 
 def editHost(request,host_id):

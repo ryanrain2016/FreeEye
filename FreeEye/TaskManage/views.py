@@ -130,9 +130,19 @@ def FileTaskDetail(request, id):
     return render(request,'TaskManage/filetaskdetail.html',locals())
 
 @login_required
+@csrf_exempt
 def CommandTaskDetail(request, id):
     taskType = 'cmd'
     task = models.CommandTask.objects.get(pk=id)
+    if request.method=='POST':
+        page = request.GET.get('page',1)
+        tableData = models.CommandTaskProgress.objects.filter(task=task)
+        paginator = Paginator(tableData,settings.ITEMS_PER_PAGE) #模板需要
+        page = int(request.GET.get('page',1))                 #模板需要
+        start = max(page-5,0)
+        page_range = paginator.page_range[start:start+10]      #模板需要
+        cur_page = paginator.page(page)                        #模板需要
+        return render(request,'TaskManage/commandtaskdetailtablelist.html',locals())
     return render(request,'TaskManage/commandtaskdetail.html',locals())
 
 def assignHost(request):

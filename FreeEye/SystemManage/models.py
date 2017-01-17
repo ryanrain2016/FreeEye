@@ -12,3 +12,9 @@ class HostGroup(models.Model):
 
     def __repr__(self):
         return self.name
+
+class Log(models.Model):
+    user = models.CharField(max_length=32)
+    do = models.CharField(max_length=128)
+    isnormal = models.BooleanField(default=True)
+    createAt = models.DateTimeField(auto_now_add=True)

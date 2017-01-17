@@ -16,6 +16,7 @@ class CommandTaskProgress(models.Model):
     output = models.CharField(max_length=4096,default='')
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
+    result =models.CharField(max_length=8,null=True,blank=True)
     createAt = models.DateTimeField(auto_now_add=True)
     finishAt = models.DateTimeField(null=True,default=None)
 
@@ -34,5 +35,6 @@ class FileTaskProgress(models.Model):
     taskhost = models.ForeignKey('HostManage.Host')
     is_start = models.BooleanField(default=False)
     is_finish = models.BooleanField(default=False)
+    result =models.CharField(max_length=8,null=True,blank=True)
     createAt = models.DateTimeField(auto_now_add=True)
     finishAt = models.DateTimeField(null=True,default=None)
