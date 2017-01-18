@@ -5,8 +5,13 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.db.models import Q
+
+import HostManage
 
 from . import models
+from . import forms
 # Create your views here.
 @csrf_exempt
 @login_required
@@ -37,6 +42,42 @@ def addHostGroup(request):
     else:
         return render(request,'SystemManage/addhostgroup.html',locals())
 
+def editHostGroup(request,id):
+    group = models.HostGroup.objects.get(pk=id)
+    if request.method=='POST':
+        try:
+            group.name = request.POST['name']
+            group.save()
+            return JsonResponse(dict(ret=0))
+        except:
+            messages.error(request, '主机组名错误！')
+            return render(request,'SystemManage/edithostgroup.html',locals())
+    else:
+        return render(request,'SystemManage/edithostgroup.html',locals())
+
+@login_required
+@csrf_exempt
+def deleteHostgroup(request,id):
+    group = models.HostGroup.objects.get(pk=id)
+    group.delete()
+    return JsonResponse(dict(ret=0))
+
+@csrf_exempt
+def groupAssignHost(request,id):
+    group = models.HostGroup.objects.get(pk=id)
+    if request.method=='POST':
+        hostIds = request.POST.get('hostIds','')
+        group.host_set=[]
+        if hostIds=='':
+            return JsonResponse(dict(ret=0))
+        hostIds = list(map(int,hostIds.split('&')))
+        HostManage.models.Host.objects.filter(id__in=hostIds).update(hostgroup=group)
+        return JsonResponse(dict(ret=0))
+    else:
+        hosts = HostManage.models.Host.objects.filter(Q(hostgroup=None)|Q(hostgroup=group))
+    return render(request,'SystemManage/assignhost.html',locals())
+
+
 def userList(request):
     if request.method=='POST':
         username = request.POST.get('username','')
@@ -47,6 +88,7 @@ def userList(request):
             tableData = models.User.objects.select_related('profile')
         if email:
             tableData = tableData.filter(profile__email__icontains=email)
+        tableData = tableData.filter(is_active=True).filter(is_superuser=False)
         paginator = Paginator(tableData,settings.ITEMS_PER_PAGE) #模板需要
         page = int(request.GET.get('page',1))                 #模板需要
         start = max(page-5,0)
@@ -57,4 +99,25 @@ def userList(request):
 
 
 def addUser(request):
-    pass
+    if request.method=='POST':
+        form = forms.UserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                user = User.objects.create_user(username=data['username'],password=data['password'])
+                user.save()
+                return JsonResponse(dict(ret=0))
+            except Exception as e:
+                return JsonResponse(dict(ret=-1,msg='用户创建失败！'))
+        return render(request,'SystemManage/adduser.html',locals())
+    else:
+        form = forms.UserForm()
+        return render(request,'SystemManage/adduser.html',locals())
+
+@login_required
+@csrf_exempt
+def deactiveUser(request,id):
+    user = User.objects.get(pk=id)
+    user.is_active=False
+    user.save()
+    return JsonResponse(dict(ret=0))

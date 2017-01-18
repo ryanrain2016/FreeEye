@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'MainFrame',
     'HostManage',
     'TaskManage',
@@ -143,5 +144,12 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 MEDIA_URL = '/MEDIA/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",        #开发环境中使用内存就可以了
+        "ROUTING": "FreeEye.routings.routing",  #定义channel的根入口
+    },
+}
 
 ITEMS_PER_PAGE = 10

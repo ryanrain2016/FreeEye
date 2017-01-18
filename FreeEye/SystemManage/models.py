@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class HostGroup(models.Model):
     name = models.CharField(max_length=32)
-    user = models.ManyToManyField(User,blank=True,null=True)
+    user = models.ManyToManyField(User,blank=True)
     isDel = models.BooleanField(default=False)
 
     def __str__(self):

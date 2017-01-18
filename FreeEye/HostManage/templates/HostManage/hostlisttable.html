@@ -29,12 +29,12 @@
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>{{ data.remark }}</td>
                         <td>
-                            <a class="btn btn-primary" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>
-                            <button class="btn btn-primary" onclick='AddToTop({{ data.id }})'>加到首页</button>
-                            <button class="btn btn-primary" onclick='Webshell({{ data.id }})'>shell</button>
-                            <button class="btn btn-primary" onclick='AlertSet({{ data.id }})'>告警设置</button>
-                            <button class="btn btn-primary" onclick='EditHost({{ data.id }})'>修改</button>
-                            <button class="btn btn-primary" onclick='DeleteHost({{ data.id }})'>删除</button>
+                            <a class="btn btn-primary btn-xs" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>
+                            <button class="btn btn-primary btn-xs" onclick='AddToTop({{ data.id }})'>加到首页</button>
+                            <button class="btn btn-primary btn-xs" onclick='Webshell({{ data.id }})'>shell</button>
+                            <button class="btn btn-primary btn-xs" onclick='AlertSet({{ data.id }})'>告警设置</button>
+                            <button class="btn btn-primary btn-xs" onclick='EditHost({{ data.id }})'>修改</button>
+                            <button class="btn btn-primary btn-xs" onclick='DeleteHost({{ data.id }})'>删除</button>
                         </td>
                     </tr>
                 {% endfor %}

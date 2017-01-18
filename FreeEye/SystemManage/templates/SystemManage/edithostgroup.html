@@ -1,14 +1,14 @@
-<form action="/HostManage/AddHostGroup/" method="post" id="HostAddGroupForm">
+<form action="/HostManage/EditHostGroup/" method="post" id="HostGroupForm">
 {% csrf_token %}
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-<h4 class="modal-title" id="hostGroupModalLabel"><i class="glyphicon glyphicon-plus"></i>新增主机组</h4>
+<h4 class="modal-title" id="hostGroupModalLabel"><i class="glyphicon glyphicon-plus"></i>编辑主机组</h4>
 </div>
 <div class="modal-body">
     <div class="form-group">
         <label class="col-sm-3 control-label">主机组名称</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control input-sm" id="name" name="name" placeholder="请输入主机组名字">
+            <input type="text" class="form-control input-sm" id="name" name="name" value="{{group.name}}" placeholder="请输入主机组名字">
         </div>
     </div>
 </div>
@@ -27,9 +27,9 @@
 <script>
 $('#btn_HostGroupModalSubmit').click(function(){
     $.ajax({
-        url:'/SystemManage/AddHostGroup/',
+        url:'/SystemManage/EditHostGroup/{{group.id}}/',
         type:'post',
-        data:$('#HostAddGroupForm').serialize(),
+        data:$('#HostGroupForm').serialize(),
         success:OnSuccessPost_Add,
     });
 });
@@ -37,7 +37,7 @@ function OnSuccessPost_Add(msg){
     if(msg.ret==0){
         $('#btn_HostGroupModalClose').click();
         $('#searchForm').submit();
-        toastr.success('主机组添加成功！','信息');
+        toastr.success('主机组保存成功！','信息');
     }
     else{
         $('#HostGroupModal .modal-content').html(msg);

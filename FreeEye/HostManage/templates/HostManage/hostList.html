@@ -63,10 +63,11 @@
 {% endblock %}
 
 {% block tail %}
-<link rel="stylesheet" href="{% static 'Hplus/css/plugins/sweetalert/sweetalert.css' %}">
+
 <script src="{% static 'Hplus/js/content.js' %}"></script>
 <script src="{% static 'MainFrame/js/jquery.unobtrusive-ajax.min.js' %}"></script>
 <script src="{% static 'Hplus/js/plugins/toastr/toastr.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'Hplus/css/plugins/sweetalert/sweetalert.css' %}">
 <script src="{% static 'Hplus/js/plugins/sweetalert/sweetalert.min.js' %}"></script>
     <script>
 
@@ -159,7 +160,7 @@
                     type:'post',
                     success:function(html){
                         swal("删除成功！", "您已经删除了这条主机信息。", "success");
-                        $('#host_'+host_id).fadeOut();
+                        $('#searchForm').submit();
                     },
                 });
             });
@@ -168,6 +169,7 @@
         function OnSuccessPost_Add(msg){
             if(msg.ret==0){
                 $('#btn_HostModalClose').click();
+                $('#searchForm').submit();
                 toastr.success('主机保存成功！','信息');
             }
             else{

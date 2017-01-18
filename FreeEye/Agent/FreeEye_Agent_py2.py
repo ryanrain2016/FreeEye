@@ -47,7 +47,7 @@ class Settings(object):
             value = default
         return value
 
-class Performance:
+class Performance(object):
     def __init__(self):
         self.ps = psutil
 
@@ -91,7 +91,7 @@ class DataCollector(object):
         }
 
     def getInfo(self,info):
-        cmd = self.infocmd_table.get('info',None)
+        cmd = self.infocmd_table.get(info,None)
         if cmd is None:raise KeyError('Info name %s Error'%info)
         p = os.popen(cmd)
         return p.read()
@@ -101,6 +101,7 @@ class DataCollector(object):
         for info in self.infocmd_table:
             infos['info'] = self.getInfo(info)
         return infos
+
 
 def on_message(ws, message):
     logging.info('recv: %s'%message)

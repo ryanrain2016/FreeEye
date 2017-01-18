@@ -52,6 +52,7 @@ $('#btn_TaskModalSubmit').click(function(){
 function OnSuccessPost_Add(msg){
     if(msg.ret==0){
         $('#btn_TaskModalClose').click();
+        $('#searchForm').submit();
         toastr.success('任务添加成功！','信息');
     }
     else{
