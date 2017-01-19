@@ -7,6 +7,7 @@ urlpatterns=[
     url(r'^EditHostGroup/(?P<id>\d+)/',views.editHostGroup,name='edithostgroup'),
     url(r'^DeleteHostGroup/(?P<id>\d+)/',views.deleteHostgroup,name='deletehostgroup'),
     url(r'^GroupAssignHost/(?P<id>\d+)/',views.groupAssignHost,name='groupassignhost'),
+    url(r'^GroupAssignUser/(?P<id>\d+)/',views.groupAssignUser,name='groupassignuser'),
     url(r'^UserManage/',views.userList,name='userlist'),
     url(r'^AddUser/',views.addUser,name='adduser'),
     url(r'^DeleteUser/(?P<id>\d+)/',views.deactiveUser,name='deleteuser'),

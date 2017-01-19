@@ -78,6 +78,19 @@
         });
         $('#GroupModal').modal();
     }
+    function AssignUser(id){
+        $.ajax({
+            url:'/SystemManage/GroupAssignUser/'+id+'/',
+            type:'get',
+            success:function(html){
+                $('#GroupModal .modal-content').html(html);
+            },
+            error:function(e){
+                $('#GroupModal .modal-content').html(e.responseText);
+            }
+        });
+        $('#GroupModal').modal();
+    }
 </script>
 {% if paginator.num_pages > 1 %}
     {% include 'paginator.html' %}

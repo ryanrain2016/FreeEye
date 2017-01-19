@@ -77,6 +77,22 @@ def groupAssignHost(request,id):
         hosts = HostManage.models.Host.objects.filter(Q(hostgroup=None)|Q(hostgroup=group))
     return render(request,'SystemManage/assignhost.html',locals())
 
+@csrf_exempt
+def groupAssignUser(request,id):
+    group = models.HostGroup.objects.select_related().get(pk=id)
+    if request.method=='POST':
+        userIds = request.POST.get('userIds','')
+        group.user=[]
+        if userIds=='':
+            return JsonResponse(dict(ret=0))
+        userIds = list(map(int,userIds.split('&')))
+        users = User.objects.filter(id__in=userIds)
+        group.user=users
+        return JsonResponse(dict(ret=0))
+    else:
+        users = User.objects.filter(is_superuser=False).all()
+        # users = [dict(id=user.id,user.username,checked = (user in group.user)) for user in users]
+    return render(request,'SystemManage/assignuser.html',locals())
 
 def userList(request):
     if request.method=='POST':

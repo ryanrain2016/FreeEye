@@ -37,6 +37,9 @@ function OnSuccessPost_Add(msg){
         toastr.success('主机组添加成功！','信息');
         $('#searchForm').submit();
     }
+    else if(msg.ret==-1){
+        alert(msg.msg);
+    }
     else{
         $('#UserModal .modal-content').html(msg);
     }

@@ -184,7 +184,7 @@ def getHost(request):
     taskprogressmodel = models.FileTaskProgress if taskType=='file' else models.CommandTaskProgress
     taskprogress = taskprogressmodel.objects.filter(task = task).select_related().all()
     selected_hosts = [p.taskhost for p in taskprogress]
-    hosts = [dict(id=host.id,name=host.name,checked=host in selected_hosts) for host in hosts.all()]
+    hosts = [dict(id=host.id,name=host.name,isSelected=host in selected_hosts) for host in hosts.all()]
     return JsonResponse(hosts,safe=False)
 
 @csrf_exempt

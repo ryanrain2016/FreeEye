@@ -1,6 +1,4 @@
 import paramiko
-from datetime import datetime
-
 def getSSH(hostname,port,username='root',password=''):
     s = paramiko.SSHClient()
     s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -10,11 +8,6 @@ def getSSH(hostname,port,username='root',password=''):
 def SShCommand(ssh,cmd):
     i,o,e = ssh.exec_command(cmd)
     return o.read()
-
-def exist_cmd(ssh,cmd):
-    i,o,e = ssh.exec_command(cmd + '&& echo 1 || echo 0' )
-    out = o.readlines()
-    return out[-1]=='1'
 
 def SSHFilePut(ssh,file,remote_dir,on_exists='ba',cb=None): #ba:备份，ov:覆盖，'sk':跳过
     sftp = paramiko.SFTPClient.from_transport(ssh)

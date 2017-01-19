@@ -23,7 +23,7 @@
                 </tr>
             {% else %}
                 {% for data in cur_page.object_list %}
-                    <tr>
+                    <tr id=filetask_{{ data.id }}>
                         <td>{{ data.task.name }}</td>
                         <td>{{ data.taskhost.name }}</td>
                         <td>{{ data.task.file }}</td>
@@ -50,10 +50,10 @@
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>
                             {% if not data.is_start %}
-                            <a class="btn btn-primary btn-xs" href='/TaskManage/FileTaskExecute/{{ data.id }}'>执行</a>
+                            <a class="btn btn-primary btn-xs" onclick='FileTaskExecute({{ data.id }});'>执行</a>
                             {% else %}
                                 {% if data.is_finished %}
-                            <a class="btn btn-primary btn-xs" href='/TaskManage/FileTaskReExecute/{{ data.id }}'>重新执行</a>
+                            <a class="btn btn-primary btn-xs" onclick='FileTaskReExecute({{ data.id }});'>重新执行</a>
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -61,6 +61,14 @@
                 {% endfor %}
             {% endif %}
 </tbody></table></div>
+<script>
+    function FileTaskExecute(id){
+
+    }
+    function FileTaskReExecute(id){
+
+    }
+</script>
 {% if paginator.num_pages > 1 %}
     {% include 'paginator.html' %}
 {% endif %}

@@ -9,8 +9,9 @@
                 <th style="width:10%">任务名称</th>
                 <th style="width:10%">主机</th>
                 <th style="width:10%">命令</th>
-                <th style="width:20%">返回</th>
+                <th style="width:10%">返回</th>
                 <th style="width:10%">进度</th>
+                <th style="width:10%">结果</th>
                 <th style="width:10%">创建时间</th>
                 <th style="width:20%">操作</th>
             </tr>
@@ -22,21 +23,11 @@
                 </tr>
             {% else %}
                 {% for data in cur_page.object_list %}
-                    <tr>
+                    <tr id='commandtask_{{ data.id }}'>
                         <td>{{ data.task.name }}</td>
                         <td>{{ data.taskhost.name }}</td>
                         <td>{{ data.task.cmdline }}</td>
                         <td>{{ data.output }}</td>
-                        <td>{% if data.task.on_exists == 'ov' %}
-                            覆盖
-                            {% else %}
-                                {% if data.task.on_exists == 'ba' %}
-                                备份
-                                {%else%}
-                                跳过
-                                {%endif%}
-                            {% endif %}
-                        </td>
                         <td>{% if not data.is_start %}
                             未开始
                             {% else %}
@@ -46,6 +37,7 @@
                                     已完成
                                 {% endif %}
                             {% endif %}</td>
+                        <td>{% if data.result %}{{ data.result }}{% endif %}</td>
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>
                             {% if not data.is_start %}

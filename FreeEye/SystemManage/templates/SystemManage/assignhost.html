@@ -116,7 +116,7 @@
         var hostIds = hostIdAry.join("&");
         $.post("/SystemManage/GroupAssignHost/{{ group.id }}/", {hostIds: hostIds}, function (r) {
             layer.closeAll('loading');
-            $('#setBranchs_Modal').modal('hide');
+            $('#GroupModal').modal('hide');
             if (r.ret == 0) {
                 layer.msg('分配成功', { time: 2000, icon: 1 }, function (index) {
                     var $form = $("#searchForm");//刷新表格

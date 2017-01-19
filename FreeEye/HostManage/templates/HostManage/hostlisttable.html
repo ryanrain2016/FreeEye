@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 <th style="width:10%">主机名称</th>
-                <th style="width:20%">主机IP</th>
+                <th style="width:20%">主机地址</th>
                 <th style="width:10%">主机组</th>
                 <th style="width:10%">创建时间</th>
                 <th style="width:10%">备注</th>
@@ -25,7 +25,7 @@
                     <tr id='host_{{ data.id }}'>
                         <td>{{ data.name }}</td>
                         <td>{{ data.addr }}</td>
-                        <td>{{ data.group }}</td>
+                        <td>{% if data.hostgroup %}{{ data.hostgroup }}{% endif %}</td>
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>{{ data.remark }}</td>
                         <td>
