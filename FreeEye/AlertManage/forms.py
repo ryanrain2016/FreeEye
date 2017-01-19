@@ -1,7 +1,7 @@
 from django import forms
 from . import models
 
-class AlertForm(models.ModelForm):
+class AlertForm(forms.ModelForm):
     class Meta:
         model = models.Alert
         fields = ('name','_type','factor','threshold','receiver','alertContent')
@@ -14,10 +14,10 @@ class AlertForm(models.ModelForm):
             'alertContent':'告警内容',
         }
         widgits={
-            'name':models.TextInput(attrs={'class':'form-control'}),
-            '_type':models.Select(attrs={'class':'form-control'}),
-            'factor':models.Select(attrs={'class':'form-control'}),
-            'threshold':models.TextInput(attrs={'class':'form-control'}),
-            'receiver':models.TextInput(attrs={'class':'form-control'}),
-            'alertContent':models.TextArea(attrs={'class':'form-control'}),
+            'name':forms.TextInput(attrs={'class':'form-control'}),
+            '_type':forms.Select(attrs={'class':'form-control'}),
+            'factor':forms.Select(attrs={'class':'form-control'}),
+            'threshold':forms.TextInput(attrs={'class':'form-control'}),
+            'receiver':forms.TextInput(attrs={'class':'form-control'}),
+            'alertContent':forms.TextInput(attrs={'class':'form-control'}),
         }

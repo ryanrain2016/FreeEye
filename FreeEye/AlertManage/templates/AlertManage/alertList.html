@@ -24,18 +24,50 @@
                 </div>
                 <div class="ibox-content">
                     <form data-ajax="true" data-ajax-begin="tableLoading" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-update="#tableArea" id="searchForm" method="post" role="form">
-                    {% csrf_token %}
                     <div class='row'>
-                        <div class='col-md-6'>
+                        <div class='col-md-4'>
                             <div class="form-group">
-                                <div class='col-md-3 control-label'>用户名</div>
-                                <div class='col-md-9'><input name='username' class='form-control'></div>
+                                <div class='col-md-3 control-label'>名称</div>
+                                <div class='col-md-9'><input type="text" name='name' class='form-control'></div>
                             </div>
                         </div>
-                        <div class='col-md-6'>
+                        <div class='col-md-4'>
                             <div class="form-group">
-                                <div class='col-md-3 control-label'>电子邮件</div>
-                                <div class='col-md-9'><input name='email' class='form-control'></div>
+                                <div class='col-md-3 control-label'>告警类型</div>
+                                <div class='col-md-9'>
+                                <select id="id__type" name="_type" class='form-control'>
+                                <option value="" selected="selected">---------</option>
+                                <option value="email">邮件</option>
+                                <option value="sms">短信</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-4'>
+                            <div class="form-group">
+                                <div class='col-md-3 control-label'>告警参数</div>
+                                <div class='col-md-9'>
+                                <select id="id_factor" name="factor" class='form-control'>
+                                <option value="" selected="selected">---------</option>
+                                <option value="dis">磁盘</option>
+                                <option value="cpu">CPU</option>
+                                <option value="mem">内存</option>
+                                <option value="net">带宽</option>
+                                <option value="app">应用</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-4'>
+                            <div class="form-group">
+                                <div class='col-md-3 control-label'>告警阈值</div>
+                                <div class='col-md-9'><input type="text" name='threshold'  class='form-control'></div>
+                            </div>
+                        </div>
+                        <div class='col-md-4'>
+                            <div class="form-group">
+                                <div class='col-md-3 control-label'>接收者</div>
+                                <div class='col-md-9'><input type="text" name='receiver'  class='form-control'></div>
                             </div>
                         </div>
                     </div>

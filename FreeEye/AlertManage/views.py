@@ -14,10 +14,9 @@ def alertManage(request):
     if request.method=='POST':
         name = request.POST.get('name','')
         _type = request.POST.get('_type','')
-        factor = requst.POST.get('factor','')
+        factor = request.POST.get('factor','')
         threshold = request.POST.get('threshold','')
         receiver = request.POST.get('receiver','')
-        alertContent = request.POST.get('alertContent','')
         if request.user.is_superuser:
             tableData = models.Alert.objects.all()
         else:
@@ -40,5 +39,5 @@ def alertManage(request):
         cur_page = paginator.page(page)                        #模板需要
         return render(request,'AlertManage/alerttablelist.html',locals())
     else:
-        form = froms.AlertForm()
-    return render(request,'SystemManage/alertList.html',locals())
+        form = forms.AlertForm()
+    return render(request,'AlertManage/alertList.html',locals())
