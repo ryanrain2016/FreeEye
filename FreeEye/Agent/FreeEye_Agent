@@ -16,7 +16,7 @@ case "$1" in
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Finished." >>/var/log/FreeEye_Agent.log
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
-        touch /var/lock/subsys/FreeEye_Agent
+        touch /var/lock/FreeEye_Agent.lock
         ;;
   stop)
         echo -n "Shutting Down python Listeners: "
@@ -25,7 +25,7 @@ case "$1" in
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         killall -9 FreeEye_Agent_py2.py
         echo "Done."
-        rm -f /var/lock/subsys/FreeEye_Agent
+        rm -f /var/lock/FreeEye_Agent.lock
         echo "Done."
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Finished." >>/var/log/FreeEye_Agent.log
@@ -39,7 +39,7 @@ case "$1" in
     echo "python"
         killall -9 FreeEye_Agent_py2.py
         echo "Done."
-        rm -f /var/lock/subsys/FreeEye_Agent
+        rm -f /var/lock/FreeEye_Agent.lock
         echo "Done."
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Finished." >>/var/log/FreeEye_Agent.log
@@ -55,7 +55,7 @@ case "$1" in
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Finished." >>/var/log/FreeEye_Agent.log
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
-        touch /var/lock/subsys/FreeEye_Agent
+        touch /var/lock/FreeEye_Agent.lock
         ;;
   *)
   echo "Usage: python { start | stop | restart }"

@@ -4,7 +4,7 @@ from channels.auth import http_session_user, channel_session_user, channel_sessi
 
 from django.shortcuts import render_to_response
 from django.conf import settings
-from FreeEye.utils import *
+from FreeEye import utils
 from . import models
 
 try:
@@ -21,10 +21,9 @@ def InstallAgent(message):  #
     id = kw.get('id',None)
     if id is None:return
     host = Host.objects.get(pk=id)
-    ssh = getSSH(hostname=host.addr,port=host.port,username=host.username,password=host.password)
-    SShCommand(ssh,'mkdir /usr/local/FreeEye')
+    ssh = utils.SSH(hostname=host.addr,port=host.port,username=host.username,password=host.password)
+    ssh.SShCommand('mkdir /usr/local/FreeEye')
     configfile = os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent.conf')
     config = open(configfile).read()%locals()
-    SSHFileWrite(ssh,config,'/usr/local/FreeEye/FreeEye_Agent.conf')
-    SSHFilePut(ssh,os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent_py2.py','/usr/local/FreeEye')
-    
+    ssh.writefile(config,'/usr/local/FreeEye/FreeEye_Agent.conf')
+    ssh.putfile(os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent_py2.py','/usr/local/FreeEye')
