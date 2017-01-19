@@ -31,7 +31,7 @@
                         <td>
                             <a class="btn btn-primary btn-xs" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>
                             <button class="btn btn-primary btn-xs" onclick='AddToTop({{ data.id }})'>加到首页</button>
-                            <button class="btn btn-primary btn-xs" onclick='Webshell({{ data.id }})'>shell</button>
+                            <button class="btn btn-primary btn-xs" onclick='Webshell({{ data.id }},"{{ data.name }}")'>shell</button>
                             <button class="btn btn-primary btn-xs" onclick='AlertSet({{ data.id }})'>告警设置</button>
                             <button class="btn btn-primary btn-xs" onclick='EditHost({{ data.id }})'>修改</button>
                             <button class="btn btn-primary btn-xs" onclick='DeleteHost({{ data.id }})'>删除</button>

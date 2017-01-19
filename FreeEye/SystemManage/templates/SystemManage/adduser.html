@@ -34,7 +34,7 @@ $('#btn_UserModalSubmit').click(function(){
 function OnSuccessPost_Add(msg){
     if(msg.ret==0){
         $('#btn_UserModalClose').click();
-        toastr.success('主机组添加成功！','信息');
+        toastr.success('用户添加成功！','信息');
         $('#searchForm').submit();
     }
     else if(msg.ret==-1){

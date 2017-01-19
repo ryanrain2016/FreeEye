@@ -16,8 +16,8 @@ except ImportError:  # pragma: no cover
 #site = get_current_site(request)
 def InstallAgent(message):  #
     kw = message.content
-    site = kw.get('site','')
-    ws_protocol = kw.get('ws_protocol','ws')
+    site = kw.get('site',settings.SITE)
+    ws_protocol = kw.get('ws_protocol',settings.WS_PROTOCOL)
     id = kw.get('id',None)
     if id is None:return
     host = Host.objects.get(pk=id)
