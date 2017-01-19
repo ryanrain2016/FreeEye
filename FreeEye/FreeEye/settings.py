@@ -152,4 +152,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-ITEMS_PER_PAGE = 10
+ITEMS_PER_PAGE = 10  #分页时每页的条目数
+
+SITE = '127.0.0.1'  #域名或者ip
+WS_PROTOCOL = 'ws'  #websocket的协议，这两项将填写到agent的配置文件中

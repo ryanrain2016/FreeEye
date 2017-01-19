@@ -25,6 +25,7 @@
             <div class="ibox-content">
                 <form data-ajax="true" data-ajax-begin="tableLoading" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-update="#tableArea" id="searchForm" method="post" role="form">
                 {% csrf_token %}
+                <div class="row">
                 {% for field in form %}
                 <div class='col-md-6'>
                     <div class="form-group">
@@ -33,8 +34,8 @@
                     </div>
                 </div>
                 {% endfor %}
+                </div>
                 <div class='row text-center'>
-                    <br><br>
                     <button id="btnSubmit" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">查询</button>
                     <button id="btnAdd" type="button" class="btn btn-w-m btn-info btn-sm">添加</button>
                     <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
