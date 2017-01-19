@@ -51,7 +51,7 @@ class SSH:
         f.write(content)
         f.close()
 
-    def SSHFileRead(self,file):
+    def readfile(self,file):
         f = self._sftp.open(file,'r')
         content=f.read()
         f.close()

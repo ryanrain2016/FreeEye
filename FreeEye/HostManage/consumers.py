@@ -22,8 +22,10 @@ def InstallAgent(message):  #
     if id is None:return
     host = Host.objects.get(pk=id)
     ssh = utils.SSH(hostname=host.addr,port=host.port,username=host.username,password=host.password)
-    ssh.SShCommand('mkdir /usr/local/FreeEye')
+    ssh.command('mkdir /usr/local/FreeEye')
     configfile = os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent.conf')
     config = open(configfile).read()%locals()
     ssh.writefile(config,'/usr/local/FreeEye/FreeEye_Agent.conf')
-    ssh.putfile(os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent_py2.py','/usr/local/FreeEye')
+    ssh.putfile(os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent_py2.py','/usr/local/FreeEye/')
+    ssh.putfile(os.path.join(settings.BASE_DIR,'Agent','FreeEye_Agent','/etc/init.d/')
+    ssh.command('chmod 755 /etc/init.d/FreeEye_Agent')

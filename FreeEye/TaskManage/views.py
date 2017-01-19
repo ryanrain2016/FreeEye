@@ -16,8 +16,6 @@ import HostManage
 @csrf_exempt
 @login_required
 def fileTask(request):
-    print(dir(models.FileTask))
-    print(dir(models.FileTask.objects.get(pk=1)))
     if request.method=='POST':
         data = request.POST
         if request.user.is_superuser:
