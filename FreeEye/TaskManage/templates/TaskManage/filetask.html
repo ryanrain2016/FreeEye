@@ -1,5 +1,6 @@
 {% extends 'MainFrame/base.html' %}
 {% load staticfiles %}
+{%load guardian_tags %}
 {% block head %}
 {% endblock %}
 
@@ -38,8 +39,13 @@
                 <div class='row text-center'>
                     <br>
                     <button id="btnSubmit" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">查询</button>
+                    {% get_obj_perms request.user for perm_add as "add" %}
+                    {%if 'access_to_Function' in add%}
                     <button id="btnAdd" type="button" class="btn btn-w-m btn-info btn-sm">添加</button>
+                    {%endif%}
+                    {%if 'access_to_Function' in add%}
                     <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
+                    {%endif%}
                 </div>
                 </form>
             </div>

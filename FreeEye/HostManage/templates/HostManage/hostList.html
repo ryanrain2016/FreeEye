@@ -1,5 +1,6 @@
 {% extends 'MainFrame/base.html' %}
 {% load staticfiles %}
+{% load guardian_tags %}
 {% block title %}主机管理{% endblock %}
 {% block head %}
 {% endblock %}
@@ -39,8 +40,14 @@
                 <div class='row text-center'>
                     <br>
                     <button id="btnSubmit" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">查询</button>
+                    {% get_obj_perms request.user for perm_add as "add" %}
+                    {% get_obj_perms request.user for perm_import as "import" %}
+                    {% if 'access_to_Function' in add%}
                     <button id="btnAdd" type="button" class="btn btn-w-m btn-info btn-sm">添加</button>
+                    {%endif%}
+                    {% if 'access_to_Function' in import%}
                     <button id="btnImport" type="button" class="btn btn-w-m btn-info btn-sm">导入</button>
+                    {%endif%}
                     <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
                 </div>
                 </form>
@@ -133,7 +140,7 @@
     <script>
         function EditHost(host_id){
             $.ajax({
-                url:'/HostManage/EditHost/'+host_id,
+                url:'/HostManage/EditHost/'+host_id+'/',
                 type:'get',
                 success:function(html){
                     $('#HostModal .modal-content').html(html);
@@ -155,7 +162,7 @@
                 closeOnConfirm: false
             }, function () {
                 $.ajax({
-                    url:'/HostManage/DeleteHost/'+host_id,
+                    url:'/HostManage/DeleteHost/'+host_id+'/',
                     type:'post',
                     success:function(html){
                         swal("删除成功！", "您已经删除了这条主机信息。", "success");
@@ -176,12 +183,32 @@
             }
         }
         function Webshell(id, name){
-            //if ($("a[data-id='/HostManage/WebShell/"+id+"/']",top.window.document).length>0)return
+            if ($("a[data-id='/HostManage/WebShell/"+id+"/']",top.window.document).length>0)return
             var $a = $(`<a href="javascript:;" class="J_menuTab" data-id="/HostManage/WebShell/${id}/"><span>${name} websell</span><i class="fa fa-times-circle"></i></a>`);
             $('.page-tabs-content',top.window.document).append($a);
             $('#content-main',top.window.document).append(`<iframe class='J_iframe' name='iframe0' width="100%" height="100%"
                     src ="/HostManage/WebShell/${id}/" frameborder="0" data-id="/HostManage/WebShell/${id}/" seamless><iframe>`);
             $('.page-tabs-content a:last span',top.window.document).click();
+        }
+        function AddToTop(id){
+            $.ajax({
+                url:'/HostManage/AddToTop/',
+                type:'post',
+                data:{hostid:id},
+                success:function(msg){
+                    if (msg.ret==0){
+                        layer.msg('添加成功', {
+                            time: 2000, 
+                          });
+                        $($(window.parent.document).find("iframe")[0]).attr('src','/index/?v='+Math.random())
+                    }
+                    else{
+                        layer.msg('添加失败', {
+                            time: 2000, 
+                          });
+                    }
+                }
+            });
         }
     </script>
 {% endblock %}

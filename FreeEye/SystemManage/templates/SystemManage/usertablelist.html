@@ -26,9 +26,10 @@
                         <td>{% if data.profile.email %}{{ data.profile.email }}{% endif %}</td>
                         <td>{% for g in data.groups.all %}{{g.name}}{% if not forloop.last %} | {% endif %}{%endfor%}</td>
                         <td>
-                            <button class="btn btn-primary btn-xs" onclick="DeleteUser({{ data.id }});">删除</button>
-                            <button class="btn btn-primary btn-xs">分配角色</button>
-                            <button class="btn btn-primary btn-xs">重置密码</button>
+                            {% if delete%}
+                            <button class="btn btn-primary btn-xs" onclick="DeleteUser({{ data.id }});">删除</button>{%endif%}{%if assginrole%}
+                            <button class="btn btn-primary btn-xs" onclick="AssignRole({{ data.id }});">分配角色</button>{%endif%}{%if resetpassword%}
+                            <button class="btn btn-primary btn-xs" onclick="ResetPassword({{ data.id }});">重置密码</button>{%endif%}
                         </td>
                     </tr>
                 {% endfor %}
@@ -56,6 +57,32 @@
                 }
             });
         });
+    }
+    function AssignRole(id){
+        $.ajax({
+            url:'/SystemManage/UserAssignRole/'+id+'/',
+            type:'get',
+            success:function(html){
+                $('#UserModal .modal-content').html(html);
+            },
+            error:function(e){
+                $('#UserModal .modal-content').html(e.responseText);
+            }
+        });
+        $('#UserModal').modal();
+    }
+    function ResetPassword(id){
+        $.ajax({
+            url:'/SystemManage/ResetPassword/'+id+'/',
+            type:'get',
+            success:function(html){
+                $('#UserModal .modal-content').html(html);
+            },
+            error:function(e){
+                $('#UserModal .modal-content').html(e.responseText);
+            }
+        });
+        $('#UserModal').modal();
     }
 </script>
 {% if paginator.num_pages > 1 %}

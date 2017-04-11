@@ -23,8 +23,9 @@
                         <td>{{ data.name }}</td>
                         <td>{{ data.cmdline }}</td>
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
-                        <td>
+                        <td>{% if detail %}
                             <a class="btn btn-primary  btn-xs" href='/TaskManage/CommandTaskDetail/{{ data.id }}'>详情</a>
+                            {%endif%}
                         </td>
                     </tr>
                 {% endfor %}

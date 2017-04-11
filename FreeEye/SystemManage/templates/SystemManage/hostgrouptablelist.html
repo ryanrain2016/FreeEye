@@ -19,11 +19,18 @@
                 {% for data in cur_page.object_list %}
                     <tr>
                         <td>{{ data.name }}</td>
-                        <td>
+                        <td>{%if delete%}
                             <button class="btn btn-primary btn-xs" onclick='DeleteHostGroup({{ data.id }})'>删除</button>
+                            {%endif%}
+                            {% if edit %}
                             <button class="btn btn-primary btn-xs" onclick='EditHostGroup({{ data.id }})'>编辑</button>
+                            {%endif%}
+                            {% if assignhost %}
                             <button class="btn btn-primary btn-xs" onclick='AssignHost({{ data.id }})'>分配主机</button>
+                            {%endif%}
+                            {% if assignuser %}
                             <button class="btn btn-primary btn-xs" onclick='AssignUser({{ data.id }})'>分配用户</button>
+                            {%endif%}
                         </td>
                     </tr>
                 {% endfor %}

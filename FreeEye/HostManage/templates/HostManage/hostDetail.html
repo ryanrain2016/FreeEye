@@ -1,13 +1,22 @@
 {% extends 'MainFrame/base.html' %}
+{% load staticfiles %}
 {% block head %}
-
+<style>
+    canvas{
+        width: 400px;
+        height: 500px;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'Hplus/css/plugins/switchery/switchery.css' %}">
 {% endblock %}
+{% load cvtmem %}
 {% block content %}
     <ol class="breadcrumb">
       <li><a href="/HostManage/HostList">主机列表</a></li>
       <li><a>{{ host.name }}详情</a></li>
     </ol>
     <div class='col-md-12'>
+        <div class='col-md-12'>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>详细信息</h5>
@@ -32,18 +41,63 @@
                         <td>{{ host.hostinfo.MAC }}</td>
                     </tr>
                     <tr>
-                        <th>磁盘总量</th>
-                        <td>{{ host.hostinfo.disk_total }}</td>
+                        <th>CPU线程数</th>
+                        <td>{{ host.hostinfo.cpu_thd_cnt }}</td>
                         <th>内存总量</th>
-                        <td>{{ host.hostinfo.mem_total }}</td>
+                        <td>{{ host.hostinfo.mem_total | cvtmem}}</td>
                     </tr>
                     <tr>
-                        <th colspan='2'>内核版本</th>
-                        <td colspan='2'>{{ host.hostinfo.kernal_version }}</td>
+                        <th>内核版本</th>
+                        <td>{{ host.hostinfo.kernal_version }}</td>
+                        <th>是否在线</th>
+                        <td id='isactive'>{% if host.active %}在线{% else %}离线{% endif %}</td>
                     </tr>
                 </table>
             </div>
         </div>
+        </div>
+        <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>应用程序信息</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div id='application'>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:50%">应用程序</th>
+                                <th style="width:50%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableAreaTbody">
+                        {% for app in host.hostappliction_set.all %}
+                            <tr>
+                                <td>{{ app.application.appName }}</td>
+                                <td>{%if app.status == 'ON' %}
+                                <input type="checkbox" id="{{ app.application.appName }}" checked />
+                                {%else%}
+                                    {%if app.status == 'OF' %}
+                                <input type="checkbox" id="{{ app.application.appName }}"/>
+                                {%else %}
+                                    未安装
+                                {%endif%}
+                                {%endif%}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class='col-md-12'>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>内存占用信息</h5>
@@ -54,9 +108,11 @@
                 </div>
             </div>
             <div class="ibox-content">
-                内存图
+                <canvas id="mem-usage"></canvas>
             </div>
         </div>
+        </div>
+        <div class='col-md-12'>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>CPU使用信息</h5>
@@ -67,9 +123,16 @@
                 </div>
             </div>
             <div class="ibox-content">
-                CPU图
+                <div class='row'>
+                <div class="wrapper" class='col-md-12'>
+                    <div id='cpu-lengend' class='text-center'></div>
+                    <canvas id="cpu-usage"></canvas>
+                </div>
+                </div>
             </div>
         </div>
+        </div>
+        <div class='col-md-12'>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>磁盘读写信息</h5>
@@ -80,9 +143,11 @@
                 </div>
             </div>
             <div class="ibox-content">
-                磁盘图
+                <canvas id="disk-rw"></canvas>
             </div>
         </div>
+        </div>
+        <div class='col-md-12'>
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>网络读写信息</h5>
@@ -93,12 +158,137 @@
                 </div>
             </div>
             <div class="ibox-content">
-                网络图
+                <canvas id="net-rw"></canvas>
             </div>
+        </div>
         </div>
     </div>
 {% endblock %}
 
 {% block tail %}
+<script src='{% static "MainFrame/js/chart.min.js" %}'></script>
+<script src='{% static "Hplus/js/content.js" %}'></script>
+<script src='{% static "Hplus/js/plugins/switchery/switchery.js" %}'></script>
+<script>
+Chart.defaults.global.responsive = true;
+var cpuctx = document.getElementById('cpu-usage').getContext('2d');
+var memctx = document.getElementById('mem-usage').getContext('2d');
+var netctx = document.getElementById('net-rw').getContext('2d');
+var diskctx = document.getElementById('disk-rw').getContext('2d');
 
+function draw(ctx,title,data){
+    var scaleLabel = {
+        cpu:'%',
+        mem:'MB',
+        net:'KB/s',
+        disk:'KB/s'
+    }[title];
+    var options = {
+        title : {
+            display : true,
+            text : title
+        },
+        animation : false,
+        scaleOverride : true,
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: false,
+                    labelString: 'time'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: scaleLabel
+                },
+                ticks:{
+                    beginAtZero:true
+                }
+            }]
+        },
+        fill:true,
+    }
+    window[title]=new Chart(ctx,{
+        type:'line',
+        data:data,
+        options:options,
+    });
+    
+}
+function updateData(data,newdata){
+    for (var i in data.datasets){
+        if (data.datasets[i].data.length>=20)data.datasets[i].data.shift();
+        data.datasets[i].data.push(newdata[0][i]);
+    }
+    if(data.labels.length>=20)data.labels.shift();
+    data.labels.push(newdata[1]);
+    return data;
+}
+function setSwitchery(switchElement, checkedBool) {  
+    if((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {  
+        switchElement.setPosition(true);  
+        switchElement.handleOnchange(true);  
+    }  
+}  
+$(function(){
+    var schema = window.location.protocol=='https:' ? 'wss:' : 'ws:';
+    var host =  window.location.host;
+    socket = new ReconnectingWebSocket(schema+"//"+ host+"/user/{{ host.id }}/");
+    socket.onmessage = function(e){
+        var jdata = JSON.parse(e.data);
+        if (jdata.type=='stat'){
+            var data = jdata.data;
+            var cpu_data = window.cpu.config.data;
+            updateData(cpu_data,[[data.cpu_usr,data.cpu_sys,data.cpu_idle],jdata.createAt]);
+            window.cpu.update();
+            var mem_data = window.mem.config.data;
+            updateData(mem_data,[[data.mem_total,data.mem_used,data.mem_free,data.mem_avai],jdata.createAt]);
+            window.mem.update();
+            var net_data = window.net.config.data;
+            updateData(net_data,[[data.net_sent,data.net_recv],jdata.createAt]);
+            window.net.update();
+            var disk_data = window.disk.config.data;
+            updateData(disk_data,[[data.disk_read,data.disk_write],jdata.createAt]);
+            window.disk.update();
+            var appdata = jdata.appdata;
+            for (var i in appdata){
+                // if(appdata[i]=='OF'){$('#'+i).checked=false;}
+                // if(appdata[i]=='ON'){$('#'+i).checked=true;}
+                setSwitchery(Switch[i],appdata[i]=='ON');
+            }
+        }
+        else if (jdata.type=='info'){
+            if (jdata.active){$('#isactive').text('在线');}
+            else{$('#isactive').text('离线');} 
+        }
+    }
+    var $input = $('#application input');
+    Switch = {}
+    for(var i =0;i<$input.length;i++){
+        input = $input[i];
+        var switcher = new Switchery(input,{size:'small',color:'#0D74E9'});
+        Switch[input.id]=switcher;
+        $(input).on('change',function(e){
+            socket.send(JSON.stringify({appName:this.id,status:this.checked}));
+        });
+    }
+    $.ajax({
+        url:'/HostManage/HostStat/{{ host.id }}/',
+        type:'get',
+        success:function(msg){
+            cpu = msg.cpu;
+            mem = msg.mem;
+            net = msg.net;
+            disk = msg.disk;
+            draw(cpuctx,'cpu',msg.cpu);
+            draw(memctx,'mem',msg.mem);
+            draw(netctx,'net',msg.net);
+            draw(diskctx,'disk',msg.disk);
+        }
+    });
+});
+</script>
 {% endblock %}

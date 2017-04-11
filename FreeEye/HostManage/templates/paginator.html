@@ -18,8 +18,8 @@
         <li class="disabled"><a>下页</a></li>
         <li class="disabled"><a>尾页</a></li>
         {% else %}
-        <li><a onclick='AjaxPaginator("{{ request.path }}",{{ cur_page.next_page_number }},"#tableArea")'>下页</a></li>
-        <li><a onclick='AjaxPaginator("{{ request.path }}",{{ paginator.count }},"#tableArea")'>尾页</a></li>
+        <li><a id='nextpage' onclick='AjaxPaginator("{{ request.path }}",{{ cur_page.next_page_number }},"#tableArea")'>下页</a></li>
+        <li><a onclick='AjaxPaginator("{{ request.path }}",{{ paginator.num_pages }},"#tableArea")'>尾页</a></li>
         {% endif %}
     </ul>
 </div>

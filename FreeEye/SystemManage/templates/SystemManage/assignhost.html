@@ -7,7 +7,6 @@
         <div class="content" id="setBranchs_Modal_content">
         <div class="row">
             <div class="col-sm-6" style="border-right: dashed; border-left: dashed;border-width: 1px;">
-                <div class="slimScrollDiv" style="position: relative; width: 100%; height: 400px;">
                     <div class="form-group" id="detailHostList" style="width: 100%; height: 400px;">
                         <div class = "check i-checks"><label>
                             <input id="selectAll" type="checkbox" value="0"><i></i> 全选
@@ -18,13 +17,10 @@
                             </label></div>
                         {% endfor %}
                     </div>
-                </div>
             </div>
             <div class="col-sm-6">
-                <div class="slimScrollDiv" style="position: relative; width: 100%; height: 400px;">
                     <ol id="selectHostShow" style="width: 100%; height: 400px;">
                     </ol>
-                </div>
             </div>
         </div>
     </div>
@@ -81,14 +77,6 @@
     }
     CheckInit();
     InitEvent();
-    $('#hostgroupTree').slimScroll({
-        width:'100%',
-        height:'400px',
-        size:'5px',
-        color:'#abc',
-        distance:'5px',
-        alwaysVisible:true,
-    });
     $('#detailHostList').slimScroll({
         width:'100%',
         height:'400px',
@@ -97,7 +85,7 @@
         distance:'5px',
         alwaysVisible:true,
     });
-    $('#selectSchoolShow').slimScroll({
+    $('#selectHostShow').slimScroll({
         width:'100%',
         height:'400px',
         size:'5px',

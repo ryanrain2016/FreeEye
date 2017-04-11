@@ -12,14 +12,15 @@
                 <th style="width:20%">远程文件</th>
                 <th style="width:10%">文件已存在时</th>
                 <th style="width:10%">进度</th>
+                <th style="width:10%">结果</th>
                 <th style="width:10%">创建时间</th>
-                <th style="width:20%">操作</th>
+                <th style="width:10%">操作</th>
             </tr>
         </thead>
         <tbody id="tableAreaTbody">
             {% if not cur_page.object_list %}
                 <tr>
-                    <td colspan="7" style="text-align:center">没有数据！</td>
+                    <td colspan="10" style="text-align:center">没有数据！</td>
                 </tr>
             {% else %}
                 {% for data in cur_page.object_list %}
@@ -47,14 +48,19 @@
                                     已完成
                                 {% endif %}
                             {% endif %}</td>
+                        <td>{% if data.result is not None %}{{ data.result }}{% endif %}</td>
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>
                             {% if not data.is_start %}
-                            <a class="btn btn-primary btn-xs" onclick='FileTaskExecute({{ data.id }});'>执行</a>
+                            {%if execute%}
+                            <a class="btn btn-primary btn-xs" onclick='FileTaskExecute({{ data.id }});'>执行</a>{%endif%}
                             {% else %}
-                                {% if data.is_finished %}
+                                {% if data.is_finish %}
+                                {%if reexcute%}
                             <a class="btn btn-primary btn-xs" onclick='FileTaskReExecute({{ data.id }});'>重新执行</a>
+                                {%endif%}
                                 {% endif %}
+                                
                             {% endif %}
                         </td>
                     </tr>

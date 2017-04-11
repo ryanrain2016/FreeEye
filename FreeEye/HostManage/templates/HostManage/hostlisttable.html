@@ -1,4 +1,4 @@
-
+{% load guardian_tags %}
 {% if request.method == 'GET' %}
 <div class="text-center" id="messageArea"><i class="glyphicon glyphicon-exclamation-sign"></i>请选择查询条件...</div>
 {% else %}
@@ -29,12 +29,26 @@
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
                         <td>{{ data.remark }}</td>
                         <td>
+                            {% get_obj_perms request.user for perm_detail as "detail" %}
+                            {% get_obj_perms request.user for perm_tohome as "tohome" %}
+                            {% get_obj_perms request.user for perm_config as "config" %}
+                            {% get_obj_perms request.user for perm_edit as "edit" %}
+                            {% get_obj_perms request.user for perm_delete as "delete" %}
+                            {% get_obj_perms request.user for perm_webshell as "webshell" %}
+
+                            {%if 'access_to_Function' in detail %}
                             <a class="btn btn-primary btn-xs" href='/HostManage/HostDetail/{{ data.id }}'>详情</a>
-                            <button class="btn btn-primary btn-xs" onclick='AddToTop({{ data.id }})'>加到首页</button>
-                            <button class="btn btn-primary btn-xs" onclick='Webshell({{ data.id }},"{{ data.name }}")'>shell</button>
-                            <button class="btn btn-primary btn-xs" onclick='AlertSet({{ data.id }})'>告警设置</button>
-                            <button class="btn btn-primary btn-xs" onclick='EditHost({{ data.id }})'>修改</button>
-                            <button class="btn btn-primary btn-xs" onclick='DeleteHost({{ data.id }})'>删除</button>
+                            {%endif%}
+                            {%if 'access_to_Function' in tohome %}
+                            <button class="btn btn-primary btn-xs" onclick='AddToTop({{ data.id }})'>加到首页</button>{%endif%}
+                            {%if 'access_to_Function' in webshell %}
+                            <button class="btn btn-primary btn-xs" onclick='Webshell({{ data.id }},"{{ data.name }}")'>shell</button>{%endif%}
+                            {%if 'access_to_Function' in config %}
+                            <a class="btn btn-primary btn-xs" href='/HostManage/{{ data.id }}/LogCleanConfig/'>日志清理设置</a>{%endif%}
+                            {%if 'access_to_Function' in edit %}
+                            <button class="btn btn-primary btn-xs" onclick='EditHost({{ data.id }})'>修改</button>{%endif%}
+                            {%if 'access_to_Function' in delete %}
+                            <button class="btn btn-primary btn-xs" onclick='DeleteHost({{ data.id }})'>删除</button>{%endif%}
                         </td>
                     </tr>
                 {% endfor %}

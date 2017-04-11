@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+{% load guardian_tags %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
@@ -28,7 +29,7 @@
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold">{{ request.user.username }}</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                <span class="text-muted text-xs block">{% if request.user.is_superuser%}超级管理员{%else%}{{ roles }}{%endif%}<b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -44,21 +45,70 @@
                         <div class="logo-element">Eye
                         </div>
                     </li>
-                    <!-- <li>
-                        <a href="#">
-                            <i class="fa fa-home"></i>
+                    {% get_obj_perms request.user for perm_hostmanage as "hostmanage" %}
+                    {% get_obj_perms request.user for perm_filetask as "filetask" %}
+                    {% get_obj_perms request.user for perm_commandtask as "commandtask" %}
+                    {% get_obj_perms request.user for perm_usermanage as "usermanage" %}
+                    {% get_obj_perms request.user for perm_hostgroup as "hostgroup" %}
+                    {% get_obj_perms request.user for perm_auditlog as "auditlog" %}
+                    {% get_obj_perms request.user for perm_rolemanage as "rolemanage" %}
+                    {% if 'access_to_Function' in hostmanage %}
+                    <li>
+                        <a class="J_menuItem" href="/HostManage/HostList/" data-index="0">
+                            <i class="fa fa-desktop"></i>
                             <span class="nav-label">主机管理</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-tasks"></i>
+                            <span class="nav-label">任务管理</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
+                        {% if 'access_to_Function' in filetask %}
                             <li>
-                                <a class="J_menuItem" href="" data-index="0">主机列表</a>
+                                <a class="J_menuItem" href="/TaskManage/FileDispatch/" data-index="0">文件分发</a>
                             </li>
+                        {%endif%}
+                        {% if 'access_to_Function' in commandtask %}
                             <li>
-                                <a class="J_menuItem" href="" data-index="0">主机分配</a>
+                                <a class="J_menuItem" href="/TaskManage/CommandDispatch/" data-index="0">命令分发</a>
+                            </li>
+                            {%endif%}
+                        </ul>
+                        
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-gears"></i>
+                            <span class="nav-label">系统管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                        {% if 'access_to_Function' in usermanage %}
+                            <li>
+                                <a class="J_menuItem" href="/SystemManage/UserManage/" data-index="0">用户管理</a>
+                            </li>
+                        {% endif %}
+                        {% if 'access_to_Function' in hostgroup %}
+                            <li>
+                                <a class="J_menuItem" href="/SystemManage/GroupManage/" data-index="0">主机组管理</a>
+                            </li>
+                            {%endif%}
+                        {% if 'access_to_Function' in auditlog %}
+                            <li>
+                                <a class="J_menuItem" href="/SystemManage/AuditLog/" data-index="0">审计日志</a>
+                            </li>
+                        {%endif%}
+                        {% if 'access_to_Function' in rolemanage %}
+                            <li>
+                                <a class="J_menuItem" href="/SystemManage/RoleManage/" data-index="0">角色管理</a>
                             </li>
                         </ul>
-                    </li> -->
+                        {%endif%}
+                    </li>
                     {% for menu in menues %}
                         {% if not menu.parent %}
                         {% if menu.url %}
@@ -135,7 +185,7 @@
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{% url 'index' %}" frameborder="0" data-id="{% url 'index' %}" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2014-2015 <a href="http://www.ryan-site.site/" target="_blank">ryan's blog</a>
+                <div class="pull-right">&copy; 2016-2017 <a href="http://www.ryan-site.site/" target="_blank">ryan's blog</a>
                 </div>
             </div>
         </div>

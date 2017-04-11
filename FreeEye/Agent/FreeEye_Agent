@@ -5,6 +5,7 @@
 #
 case "$1" in
   start)
+        test -f /var/lock/FreeEye_Agent.lock && echo 'FreeEye_Agent already running' && exit 0
         echo -n "FreeEye Agent "
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Starting python ." >>/var/log/FreeEye_Agent.log
@@ -19,25 +20,26 @@ case "$1" in
         touch /var/lock/FreeEye_Agent.lock
         ;;
   stop)
-        echo -n "Shutting Down python Listeners: "
+        echo -n "Shutting Down FreeEye Agent: "
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
-        date +"! %T %a %D : Shutting Down python." >>/var/log/FreeEye_Agent.log
+        date +"! %T %a %D : Shutting Down FreeEye Agent." >>/var/log/FreeEye_Agent.log
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
-        killall -9 FreeEye_Agent_py2.py
-        echo "Done."
         rm -f /var/lock/FreeEye_Agent.lock
+        ps -ef | grep FreeEye_Agent.py | grep -v grep | awk '{print $2}' | xargs kill -9
+        echo "Done."
+        
         echo "Done."
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         date +"! %T %a %D : Finished." >>/var/log/FreeEye_Agent.log
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         ;;
     restart)
-        echo -n "Shutting Down python Listeners: "
+        echo -n "Shutting Down FreeEye Agent: "
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
-        date +"! %T %a %D : Shutting Down python." >>/var/log/FreeEye_Agent.log
+        date +"! %T %a %D : Shutting Down FreeEye Agent." >>/var/log/FreeEye_Agent.log
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
     echo "python"
-        killall -9 FreeEye_Agent_py2.py
+        ps -ef | grep FreeEye_Agent.py | grep -v grep | awk '{print $2}' | xargs kill -9
         echo "Done."
         rm -f /var/lock/FreeEye_Agent.lock
         echo "Done."
@@ -57,8 +59,11 @@ case "$1" in
         echo "---------------------------------------------------------------------------------" >>/var/log/FreeEye_Agent.log
         touch /var/lock/FreeEye_Agent.lock
         ;;
+    status)
+        test -f /var/lock/FreeEye_Agent.lock && echo "FreeEye_Agent is running"
+        ;;
   *)
-  echo "Usage: python { start | stop | restart }"
+  echo "Usage: service FreeEye_Agent { start | stop | restart | status }"
   exit 1
 esac
 exit 0

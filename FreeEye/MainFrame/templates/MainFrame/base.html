@@ -15,11 +15,12 @@
     <script src="{% static 'Hplus/js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
     <script src="{% static 'Hplus/js/plugins/layer/layer.min.js' %}"></script>
     <script src="{% static 'Hplus/js/hplus.js' %}"></script>
+    <script src="{% static 'MainFrame/js/reconnecting-websocket.min.js' %}"></script>
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'UI/css/site.css' %}"> -->
     {% block head %}{% endblock %}
 </head>
 <body>
-    <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content animated "> <!-- fadeInRight -->
         <div class='row'>
             {% block content %}{% endblock %}
         </div>

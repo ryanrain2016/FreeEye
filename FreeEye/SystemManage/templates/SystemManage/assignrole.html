@@ -1,0 +1,125 @@
+{% load staticfiles %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h6 class="modal-title">设置角色</h6>
+    </div>
+    <div class="modal-body" style="padding-bottom: 10px;">
+        <div class="content" id="setBranchs_Modal_content">
+        <div class="row">
+            <div class="col-sm-6" style="border-right: dashed; border-left: dashed;border-width: 1px;">
+                    <div class="form-group" id="detailHostList" style="width: 100%; height: 400px;">
+                        <div class = "check i-checks"><label>
+                            <input id="selectAll" type="checkbox" value="0"><i></i> 全选
+                        </label></div>
+                        {% for role in roles %}
+                            <div class = "check i-checks"><label>
+                                <input id="check_{{ role.id }}" type="checkbox" value="{{ role.id }}" {% if role in user.groups.all %}checked{% endif %}><i></i>{{ role.name }}
+                            </label></div>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="col-sm-6">
+                    <ol id="selectHostShow" style="width: 100%; height: 400px;">
+                    </ol>
+            </div>
+        </div>
+    </div>
+
+
+<script src="{% static 'Hplus/js/plugins/treeview/bootstrap-treeview.js' %}"></script>
+<script src="{% static 'Hplus/js/plugins/iCheck/icheck.min.js' %}"></script>
+<script type="text/javascript">
+    function CheckInit(){
+        $('#detailHostList .i-checks').iCheck({
+            checkboxClass:'icheckbox_square-green',
+            radioClass:'iradio_square-green',
+        });
+    }
+    function InitEvent(){
+        var allCheckElements = $('#detailHostList input[id!=selectAll]');
+        $.each(allCheckElements, function(index, element){
+            var status = this.checked;
+            if (status){
+                var text = $.trim($(this).parents('label').text());
+                var htmlString = `<li hostId="${this.value}" id='host_${this.value}'>${text}&nbsp;<a href="javascript:void(0);"
+                    onclick="RemoveSelected('${this.value}');"><i class="fa fa-trash"></i></a></li>`;
+                if ($('#host_'+this.value).length == 0){$('#selectHostShow').append(htmlString);}
+            }
+        });
+        $('#selectAll').on('ifChanged',function(event){
+            var status = this.checked;
+            var allCheckElements = $('#detailHostList input[id!=selectAll]');
+            $.each(allCheckElements, function(index, element){
+                $(element).iCheck(status?'check':'uncheck');
+            });
+        });
+        $('#detailHostList input[id!=selectAll]').on('ifChanged',function(event){
+            var status = this.checked;
+            if (status){
+                var text = $.trim($(this).parents('label').text());
+                var htmlString = `<li hostId="${this.value}" id='host_${this.value}'>${text}&nbsp;<a href="javascript:void(0);"
+                    onclick="RemoveSelected('${this.value}');"><i class="fa fa-trash"></i></a></li>`;
+                if ($('#host_'+this.value).length == 0){$('#selectHostShow').append(htmlString);}
+            }
+            else{
+                $('#host_'+this.value).remove()
+            }
+        });
+    }
+    function RemoveSelected(id){
+        var liId ='host_'+id;
+        $('#'+liId).remove();
+        if($('#check_'+id).length>0)$('#check_'+id).iCheck('uncheck');
+    }
+    function RemoveAllSelected(){
+        var $ulElement = $('#selectHostShow');
+        if ($ulElement.length>0)$ulElement.empty();
+    }
+    CheckInit();
+    InitEvent();
+    $('#detailHostList').slimScroll({
+        width:'100%',
+        height:'400px',
+        size:'5px',
+        color:'#abc',
+        distance:'5px',
+        alwaysVisible:true,
+    });
+    $('#selectHostShow').slimScroll({
+        width:'100%',
+        height:'400px',
+        size:'5px',
+        color:'#abc',
+        distance:'5px',
+        alwaysVisible:true,
+    });
+
+    function SaveSelected(){
+        layer.load(1);
+        var liElments = $("#selectHostShow li");
+        var hostIdAry = new Array();
+        $.each(liElments, function (index, e) {
+            hostIdAry.push($(e).attr("hostid"));
+        });
+        var hostIds = hostIdAry.join("&");
+        $.post("/SystemManage/UserAssignRole/{{ user.id }}/", {roleIds: hostIds}, function (r) {
+            layer.closeAll('loading');
+            $('#UserModal').modal('hide');
+            if (r.ret == 0) {
+                layer.msg('分配成功', { time: 2000, icon: 1 }, function (index) {
+                    var $form = $("#searchForm");
+                    if ($form.length > 0) {
+                        $form.submit();
+                    }
+                });
+            } else {
+                layer.alert("系统错误！", { icon: 2 });
+            }
+        });
+    }
+</script>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="RemoveAllSelected();">清空</button>
+    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+    <button type="button" class="btn btn-primary" onclick="SaveSelected();">保存</button>
+</div>

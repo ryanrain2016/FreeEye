@@ -1,3 +1,4 @@
+{%load guardian_tags %}
 {% if request.method == 'GET' %}
 <div class="text-center" id="messageArea"><i class="glyphicon glyphicon-exclamation-sign"></i>请选择查询条件...</div>
 {% else %}
@@ -36,8 +37,11 @@
                             {% endif %}
                         </td>
                         <td>{{ data.createAt|date:"Y-m-d" }} {{ data.createAt|time:"H:i:s" }}</td>
-                        <td>
+                        <td>{% get_obj_perms request.user for perm_detail as "detail" %}
+                            {% if 'access_to_Function' in detail%}
                             <a class="btn btn-primary btn-xs" href='/TaskManage/FileTaskDetail/{{ data.id }}'>详情</a>
+                            {% endif%}
+                            
                         </td>
                     </tr>
                 {% endfor %}

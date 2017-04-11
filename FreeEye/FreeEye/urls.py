@@ -26,8 +26,6 @@ urlpatterns = [
     url(r'^',include('MainFrame.urls')),
     url(r'^HostManage/',include('HostManage.urls')),
     url(r'^TaskManage/',include('TaskManage.urls')),
-    url(r'^AlertManage/',include('AlertManage.urls')),
-    url(r'^FileManage/',include('FileManage.urls')),
     url(r'^SystemManage/',include('SystemManage.urls')),
 ]
 

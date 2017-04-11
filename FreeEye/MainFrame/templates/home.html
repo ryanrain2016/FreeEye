@@ -1,0 +1,230 @@
+{% extends 'MainFrame/base.html' %}
+{% load staticfiles %}
+{%load guardian_tags %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'Hplus/css/plugins/switchery/switchery.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="col-md-3">
+    <div class="widget navy-bg text-center">
+        <div class="row">
+            <div class="col-xs-4">
+                <i class="fa fa-cubes fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+                <span> 主机总数 </span>
+                <h2 class="font-bold">{{ host_total }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="widget yellow-bg text-center">
+        <div class="row">
+            <div class="col-xs-4">
+                <i class="fa fa-flash fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+                <span> 在线主机数 </span>
+                <h2 class="font-bold">{{ host_online }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="widget navy-bg text-center">
+        <div class="row">
+            <div class="col-xs-4">
+                <i class="fa fa-tasks fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+                <span> 任务总数 </span>
+                <h2 class="font-bold">{{ task_total }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="widget navy-bg text-center">
+        <div class="row">
+            <div class="col-xs-4">
+                <i class="fa fa-check-circle fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+                <span> 已完成 </span>
+                <h2 class="font-bold">{{ task_finished }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='col-md-6'>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>最新文件任务</h5>
+            <div class="ibox-tools">
+                <span class="label label-primary">{{ now|date:"Y-m-d" }} {{ now|time:"H:i:s" }}更新</span>
+            </div>
+        </div>
+        <div class="ibox-content no-padding">
+            <table role='table' class='table table-striped'>
+                <thead>
+                    <tr>
+                        <th>任务名称</th>
+                        <th>进度</th>
+                        <th>创建日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if filetasks %}
+                    {%for task in filetasks%}
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td><span class='pie'>{{task.finished}}/{{task.total}}</span></td>
+                        <td>{{ task.createAt|date:"Y-m-d" }} {{ task.createAt|time:"H:i:s" }}</td>
+                    </tr>
+                    {% endfor %}
+                {%else%}
+                <tr><td colspan='3' class='text-center'>没有数据！</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class='col-md-6'>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>最新命令任务</h5>
+            <div class="ibox-tools">
+                <span class="label label-primary">{{ now|date:"Y-m-d" }} {{ now|time:"H:i:s" }}更新</span>
+            </div>
+        </div>
+        <div class="ibox-content no-padding">
+            <table role='table' class='table table-striped'>
+                <thead>
+                    <tr>
+                        <th>任务名称</th>
+                        <th>进度</th>
+                        <th>创建日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if commandtasks %}
+                    {%for task in commandtasks%}
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td><span class='pie'>{{task.finished}}/{{task.total}}</span></td>
+                        <td>{{ task.createAt|date:"Y-m-d" }} {{ task.createAt|time:"H:i:s" }}</td>
+                    </tr>
+                    {% endfor %}
+                {%else%}
+                <tr><td colspan='3' class='text-center'>没有数据！</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class='col-md-12'>
+    {% for host in hosts %}
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>{{ host.name }}</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link-ex" id='host_{{ host.id }}'>
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                {% for app in host.hostappliction_set.all %}
+                <div class='col-md-3'>
+                        <div class='col-md-4'><h3>{{ app.application.appName }}</h3></div>
+                        <div class='col-md-8 pull-left'>{%if app.status == 'ON' %}
+                        <input type="checkbox" id="host_{{ host.id }}__{{ app.application.appName }}" checked />
+                        {%else%}
+                            {%if app.status == 'OF' %}
+                        <input type="checkbox" id="host_{{ host.id }}__{{ app.application.appName }}"/>
+                        {%else %}
+                            未安装
+                        {%endif%}
+                        {%endif%}
+                        </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block tail %}
+<script src="{% static 'HPlus/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'HPlus/js/plugins/chartJs/Chart.min.js' %}"></script>
+<script src='{% static "Hplus/js/plugins/switchery/switchery.js" %}'></script>
+<script>
+function setSwitchery(switchElement, checkedBool) {  
+    if((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {  
+        switchElement.setPosition(true);  
+        switchElement.handleOnchange(true);  
+    }  
+}
+$(function(){
+    var schema = window.location.protocol=='https:' ? 'wss:' : 'ws:';
+    var host =  window.location.host;
+    socket = new ReconnectingWebSocket(schema+"//"+ host+"/home/");
+    socket.onmessage = function(e){
+        var jdata = JSON.parse(e.data);
+        if (jdata.type=='stat'){
+            var appdata = jdata.appdata;
+            for (var i in appdata){
+                id = jdata['id'];
+                key = 'host_'+id+'__'+i;
+                setSwitchery(Switch[key],appdata[i]=='ON');
+            }
+        }
+    }
+    var $input = $('input');
+    Switch = {}
+    for(var i =0;i<$input.length;i++){
+        input = $input[i];
+        var switcher = new Switchery(input,{size:'small',color:'#0D74E9'});
+        Switch[input.id]=switcher;
+        $(input).on('change',function(e){
+            socket.send(JSON.stringify({appName:this.id.split('__')[1],hostid:this.id.split('__')[0].split('_')[1],status:this.checked}));
+        });
+    }
+
+    $('.close-link-ex').click(function(e){
+        e.preventDefault();
+        var _this = this;
+        var hostid = this.id.split('_')[1];
+        layer.confirm('确定要从主页移除该主机监控吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:'/HostManage/RemoveFromTop/',
+                type:'post',
+                data:{hostid:hostid},
+                success:function(ret){
+                    if (ret.ret==0){
+                        layer.msg('删除成功！', {
+                            time: 2000, 
+                        });
+                        var content = $(_this).closest('div.ibox');
+                        content.remove();
+                    }
+                }
+            });
+        }, function(){
+            
+        });
+    });
+});
+</script>
+<script src="{% static 'Hplus/js/content.js' %}"></script>
+{% endblock %}

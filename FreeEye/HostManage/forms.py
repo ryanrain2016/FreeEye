@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-
+from django.core.exceptions import ValidationError
 from . import models
 import SystemManage
 
@@ -26,3 +26,29 @@ class HostAddForm(forms.ModelForm):
     class Meta:
         model = models.Host
         fields = ['name', 'addr', 'port','username', 'password','remark']
+
+def validate_LogCleanConfig(configName):
+    if '..' in configName or '/' in configName or '\\' in configName:
+        raise ValidationError('configName Error:%s'%configName )
+
+class LogCleanConfigAddForm(forms.ModelForm):
+
+    class Meta:
+        model = models.LogCleanConfig
+        exclude = ['host_id','sync','isDel']
+        validators={
+            'configName':[validate_LogCleanConfig],
+        }
+        widgets ={
+            'LogPath':forms.Textarea(),
+        }
+    
+
+class LogCleanConfigEditForm(forms.ModelForm):
+
+    class Meta:
+        model = models.LogCleanConfig
+        exclude = ['host_id','configName','sync','isDel']
+        widgets ={
+            'LogPath':forms.Textarea(),
+        }

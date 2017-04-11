@@ -34,10 +34,15 @@
     <div class="ibox-content">
         <div class='row text-center'>
             &nbsp;<br>
+            {%if assignhost%}
             <button id="btnAssign" name="btnSubmit" type="submit" class="btn btn-w-m btn-primary btn-sm">分配主机</button>
+            {%endif%}
+            {%if execute%}
             <button id="btnExecute" type="button" class="btn btn-w-m btn-primary btn-sm">执行</button>
+            {%endif%}
+            {%if reexecute%}
             <button id="btnRexcute" type="button" class="btn btn-w-m btn-primary btn-sm">重新执行</button>
-            <button type="reset" class="btn btn-w-m btn-default btn-sm">重置</button>
+            {%endif%}
         </div>
     </div>
     <div class="ibox float-e-margins">
@@ -104,5 +109,36 @@ $('#btnAssign').click(function(){
     });
     $('#TaskModal').modal();
 });
+</script>
+<script>
+    $(function(){
+        var schema = window.location.protocol=='https:' ? 'wss:' : 'ws:';
+        var host =  window.location.host;
+        socket = new ReconnectingWebSocket(schema+"//"+ host+"/TaskManage/file/{{ id }}/");
+        socket.onmessage = function(e){
+            var jdata = JSON.parse(e.data);
+            if (jdata.action=='task'){
+                id = jdata.id;
+                var $task = $('#filetask_'+id);
+                if ($task.length==0){
+                    $('#nextpage').click();
+                }
+                if(jdata.status!=undefined)$task.find('td:nth(5)').text(jdata.status);
+                if(jdata.result!=undefined)$task.find('td:nth(6)').text(jdata.result);
+            }
+        }
+        $('#btnExecute').click(function(){
+            socket.send(JSON.stringify({action:'execute'}));
+        });
+        $('#btnRexcute').click(function(){
+            socket.send(JSON.stringify({action:'reexecute'}));
+        });
+    });
+    function FileTaskExecute(id){
+        socket.send(JSON.stringify({action:'singleexecute',id:id}));
+    }
+    function FileTaskReExecute(id){
+        socket.send(JSON.stringify({action:'singlereexecute',id:id}));
+    }
 </script>
 {% endblock %}

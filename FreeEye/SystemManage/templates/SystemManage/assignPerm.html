@@ -1,0 +1,63 @@
+{% load staticfiles %}
+{% load guardian_tags %}
+<form method="post" id='PermForm'>
+    {% csrf_token %}
+    <div class='row'>
+        <div class='col-md-12'>
+            {% for module in modules %}
+            <div class="panel panel-default">
+                <div class='panel-heading'>
+                <h4 class="panel-title">
+                    {{ module.name }}
+                </h4>
+                </div>
+                <div class="panel-body">
+                    <div class='row'>
+                    {% for function in module.function_set.all %}
+                    <div class='col-md-4'>
+                        <div class='i-checks'>
+                            <div class='col-md-3'>
+                                {% get_obj_perms role for function as "func_perm" %}
+                                <input type="checkbox" id='function_{{ function.id }}' name='function_{{ function.id }}' {% if "access_to_Function" in func_perm %}checked='checked'{% endif %}>
+                            </div>
+                            <div class='col-md-9'>
+                                <label for='function_{{ function.id }}'>{{ function.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btn_ModalClose" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="btn_ModalSubmit" type="button" class="btn btn-primary">确定</button>
+    </div>
+</form>
+<script src="{% static 'Hplus/js/plugins/iCheck/icheck.min.js' %}"></script>
+<script>
+$('.i-checks').iCheck({
+    checkboxClass:'icheckbox_square-green',
+    radioClass:'iradio_square-green',
+});
+$('#btn_ModalSubmit').click(function(){
+    $.ajax({
+        url:'/SystemManage/AssignPerm/{{ id }}/',
+        type:'post',
+        data:$('#PermForm').serialize(),
+        success:OnSuccessPost,
+    });
+});
+function OnSuccessPost(msg){
+    if(msg.ret==0){
+        $('#btn_ModalClose').click();
+        toastr.success('权限信息分配成功！','信息');
+    }
+    else{
+        $('#GroupModal .modal-content').html(msg);
+    }
+}
+</script>

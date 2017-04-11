@@ -1,0 +1,84 @@
+{% if request.method == 'GET' %}
+<div class="text-center" id="messageArea"><i class="glyphicon glyphicon-exclamation-sign"></i>请选择查询条件...</div>
+{% else %}
+<div style="float:left;padding-bottom:10px;width:100%;"> 共 {{ paginator.num_pages }} 页 {{ paginator.count }} 条记录，当前为第 {{ page }} 页</div>
+<div class="grid-view">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width:50%">主机组名称</th>
+                <th style="width:50%">操作</th>
+            </tr>
+        </thead>
+        <tbody id="tableAreaTbody">
+            {% if not cur_page.object_list %}
+                <tr>
+                    <td colspan="7" style="text-align:center">没有数据！</td>
+                </tr>
+            {% else %}
+                {% for data in cur_page.object_list %}
+                    <tr>
+                        <td>{{ data.name }}</td>
+                        <td>{%if delete%}
+                            <button class="btn btn-primary btn-xs" onclick='DeleteRole({{ data.id }})'>删除</button>{%endif%}{%if edit%}
+                            <button class="btn btn-primary btn-xs" onclick='EditRole({{ data.id }})'>编辑</button>{%endif%}{%if assignperm%}
+                            <button class="btn btn-primary btn-xs" onclick='AssignPerm({{ data.id }})'>分配权限</button>{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+</tbody></table></div>
+<script>
+    function EditRole(id){
+        $.ajax({
+            url:'/SystemManage/EditRole/'+id+'/',
+            type:'get',
+            success:function(html){
+                $('#GroupModal .modal-content').html(html);
+            },
+            error:function(e){
+                $('#GroupModal .modal-content').html(e.responseText);
+            }
+        });
+        $('#GroupModal').modal();
+    }
+    function DeleteRole(id){
+        swal({
+            title: "您确定要删除这条信息吗？",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url:'/SystemManage/DeleteRole/'+id+'/',
+                type:'post',
+                success:function(msg){
+                    if (msg.ret==0){
+                        swal("删除成功！", "您已经删除了这条用户信息。", "success");
+                        $('#searchForm').submit();
+                    }
+                }
+            });
+        });
+    }
+    function AssignPerm(id){
+        $.ajax({
+            url:'/SystemManage/AssignPerm/'+id+'/',
+            type:'get',
+            success:function(html){
+                $('#GroupModal .modal-content').html(html);
+            },
+            error:function(e){
+                $('#GroupModal .modal-content').html(e.responseText);
+            }
+        });
+        $('#GroupModal').modal();
+    }
+</script>
+{% if paginator.num_pages > 1 %}
+    {% include 'paginator.html' %}
+{% endif %}
+{% endif %}

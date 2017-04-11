@@ -1,0 +1,92 @@
+{% extends 'MainFrame/base.html' %}
+{% load staticfiles %}
+{% block title %}添加清理配置{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'Hplus/css/plugins/iCheck/custom.css' %}">
+<style>
+    p input,p textarea,p select{
+        background-color: #FFFFFF;
+        background-image: none;
+        border: 1px solid #e5e6e7;
+        border-radius: 1px;
+        color: inherit;
+        display: inline;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.42857143;
+        box-shadow: none;
+    }
+    p input[type='checkbox']{
+        width: 5%;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <div class='col-md-12'>
+        <ol class="breadcrumb">
+          <li><a href="/HostManage/HostList">主机列表</a></li>
+          <li><a href='/HostManage/HostDetail/{{ host.id }}'>{{ host.name }}详情</a></li>
+          <li><a href='/HostManage/{{ host.id }}/LogCleanConfig/'>{{ host.name }}日志清理设置</a></li>
+          <li><a href='/HostManage/{{ host.id }}/AddConfig/'>{{ host.name }}添加日志清理设置</a></li>
+        </ol>
+    </div>
+    <div class='col-md-12'>
+        <div class='text-center'>
+            <h2 class="modal-title" id="hostModalLabel"><i class="glyphicon glyphicon-plus"></i>日志清理信息</h2>
+        </div>
+    </div>
+    <div class='col-md-12'>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class=text-center>
+                <button type='submit' class='btn btn-w-m btn-primary btn-sm'>提交</button>
+                <button type='reset' class="btn btn-w-m btn-default btn-sm">重置</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+    
+{% block tail %}
+<script src="{% static 'Hplus/js/plugins/iCheck/icheck.min.js' %}"></script>
+<script>
+    $(function(){
+        console.dir($('#id_create'));
+        if (!$('#id_create')[0].checked){
+            $('#id_mode_owner_group').val('');
+            $('#id_mode_owner_group').attr('disabled',true);
+        }
+        else{
+            $('#id_mode_owner_group').attr('disabled',false);
+        }
+        if (!$('#id_olddir')[0].checked){
+                $('#id_directory').val('');
+                $('#id_directory').attr('disabled',true);
+            }
+            else{
+                $('#id_directory').attr('disabled',false);
+            }
+        $('#id_create').on('change',function(){
+            if (!$('#id_olddir').checked){
+                $('#id_mode_owner_group').val('');
+                $('#id_mode_owner_group').attr('disabled',true);
+            }
+            else{
+                $('#id_mode_owner_group').attr('disabled',false);
+            }
+        });
+        $('#id_olddir').on('change',function(){
+            if (!this.checked){
+                $('#id_directory').val('');
+                $('#id_directory').attr('disabled',true);
+            }
+            else{
+                $('#id_directory').attr('disabled',false);
+            }
+        });
+    });
+</script>
+{% endblock %}
